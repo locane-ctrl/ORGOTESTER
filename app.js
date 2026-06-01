@@ -1,278 +1,92 @@
 // Organic Chemistry III Practice Questions Database
 const questionsDatabase = [
   {
-    id: 101,
-    examType: "OpenStax",
-    chapter: "Ch 12: Spectroscopy",
-    questionText: "Based on the provided Mass Spectrum, which compound corresponds to the molecular ion peak at $m/z = 44$ and a significant base peak at $m/z = 29$?",
-    media: {
-      type: "spectroscopy",
-      specType: "ms",
-      dataPoints: [
-        { x: 15, y: 15, label: "methyl fragment" },
-        { x: 29, y: 100, label: "ethyl/formyl base peak" },
-        { x: 43, y: 8, label: "propyl fragment" },
-        { x: 44, y: 60, label: "molecular ion [M+]" },
-        { x: 45, y: 2, label: "M+1 isotope peak" }
-      ]
-    },
-    tags: ["Spectroscopy", "Mass Spectrometry"],
-    hint: "Recall that $m/z = 44$ corresponds to the molecular weight of propane ($C_3H_8$) or acetaldehyde ($CH_3CHO$). A base peak at $m/z = 29$ represents the loss of a methyl radical ($M - 15$) to form an acylium ion $[H-C\\equiv O]^+$ or an ethyl cation $[CH_3-CH_2]^+$. Check which fits the fragmentation pattern best.",
-    textbookRef: "OpenStax Section 12.1",
-    textbookUrl: "https://openstax.org/books/organic-chemistry/pages/12-1-mass-spectrometry-principles-and-applications",
-    options: [
-      {
-        text: "Propane",
-        isCorrect: true,
-        explanation: "Correct! Propane ($C_3H_8$, MW = 44 g/mol) exhibits a molecular ion peak at $m/z = 44$. Loss of a methyl radical (15 amu) gives the stable ethyl cation ($CH_3CH_2^+$, $m/z = 29$), which forms the base peak."
-      },
-      {
-        text: "Acetaldehyde",
-        isCorrect: false,
-        explanation: "Incorrect. While acetaldehyde ($CH_3CHO$, MW = 44 g/mol) also has a molecular ion at $m/z = 44$, its main fragment would be the acylium ion at $m/z = 29$ ($[CH_3-C\\equiv O]^+$, which would actually appear at $m/z = 43$, not 29, representing $M - 1$ or $[H-C\\equiv O]^+$, but the base peak is overwhelmingly at 43 due to loss of H)."
-      },
-      {
-        text: "Ethanol",
-        isCorrect: false,
-        explanation: "Incorrect. Ethanol has a molecular weight of 46 g/mol, which would show a molecular ion peak at $m/z = 46$, not 44."
-      },
-      {
-        text: "Diethyl ether",
-        isCorrect: false,
-        explanation: "Incorrect. Diethyl ether has a molecular weight of 74 g/mol, which would show a molecular ion peak at $m/z = 74$, not 44."
-      }
-    ]
-  },
-  {
-    id: 102,
-    examType: "ACS",
-    topic: "Mechanisms and Energetics",
-    questionText: "The provided reaction coordinate diagram describes a single-step organic transition. What can be concluded about the thermodynamic and kinetic properties of this reaction?",
-    media: {
-      type: "energyDiagram",
-      points: [
-        { state: "Reactants", energy: 80 },
-        { state: "Transition State (TS)", energy: 150 },
-        { state: "Products", energy: 30 }
-      ]
-    },
-    tags: ["Thermodynamics", "Reaction Coordinates", "Kinetics"],
-    hint: "An exothermic reaction releases energy (Products energy < Reactants energy). The activation energy ($E_a$) is the difference between the Transition State energy and the Reactants energy.",
-    textbookRef: "OpenStax Section 6.8",
-    textbookUrl: "https://openstax.org/books/organic-chemistry/pages/6-8-describing-a-reaction-energy-diagrams-and-transition-states",
-    options: [
-      {
-        text: "It is an exothermic reaction with an activation energy of 70 kJ/mol.",
-        isCorrect: true,
-        explanation: "Correct! The reaction is exothermic (downward overall step, $\\Delta H = 30 - 80 = -50$ kJ/mol). The activation energy is the barrier from reactants to transition state, $E_a = 150 - 80 = 70$ kJ/mol."
-      },
-      {
-        text: "It is an endothermic reaction with an activation energy of 150 kJ/mol.",
-        isCorrect: false,
-        explanation: "Incorrect. The product energy (30 kJ/mol) is lower than the reactant energy (80 kJ/mol), meaning energy is released (exothermic, not endothermic). The activation energy is 70 kJ/mol, not the absolute energy of the transition state."
-      },
-      {
-        text: "It is an exothermic reaction with a reaction enthalpy ($\\Delta H$) of -70 kJ/mol.",
-        isCorrect: false,
-        explanation: "Incorrect. While it is exothermic, the reaction enthalpy is $\\Delta H = E_{\\text{products}} - E_{\\text{reactants}} = 30 - 80 = -50$ kJ/mol, not -70 kJ/mol (which is the negative activation energy)."
-      },
-      {
-        text: "It is a two-step mechanism because there is a transition state peak.",
-        isCorrect: false,
-        explanation: "Incorrect. A reaction energy diagram with a single peak (one transition state) and no intermediates describes a concerted, single-step reaction mechanism."
-      }
-    ]
-  },
-  {
-    id: 103,
-    examType: "ACS",
-    topic: "Stereochemistry",
-    questionText: "Determine the stereochemical configuration (R or S) of the chiral center in the following Fischer projection.",
-    media: {
-      type: "fischer",
-      top: "\\text{CHO}",
-      bottom: "\\text{CH}_2\\text{OH}",
-      left: "\\text{H}",
-      right: "\\text{OH}",
-      center: ""
-    },
-    tags: ["Stereochemistry", "Fischer Projections", "R/S Configuration"],
-    hint: "Assign priorities to the four substituents around the chiral carbon (1: $-\\text{OH}$, 2: $-\\text{CHO}$, 3: $-\\text{CH}_2\\text{OH}$, 4: $-\\text{H}$). Remember that in Fischer projections, horizontal bonds point towards you (wedges) and vertical bonds point away (dashes). If the lowest priority group (4) is horizontal, reverse the apparent direction.",
-    textbookRef: "OpenStax Section 5.5",
-    textbookUrl: "https://openstax.org/books/organic-chemistry/pages/5-5-assigning-configuration-to-chiral-centers",
-    options: [
-      {
-        text: "(R)-Glyceraldehyde",
-        isCorrect: true,
-        explanation: "Correct! Priorities are: $-\\text{OH}$ (1), $-\\text{CHO}$ (2), $-\\text{CH}_2\\text{OH}$ (3), $-\\text{H}$ (4). Going from 1 -> 2 -> 3 goes counter-clockwise, which seems like (S). However, since the lowest priority group ($-\\text{H}$) is on a horizontal bond (pointing towards you), we reverse the result, giving (R)."
-      },
-      {
-        text: "(S)-Glyceraldehyde",
-        isCorrect: false,
-        explanation: "Incorrect. Although going from priority 1 -> 2 -> 3 is counter-clockwise, the hydrogen is on a horizontal bond, so we must reverse the configuration from S to R."
-      },
-      {
-        text: "Racemic mixture",
-        isCorrect: false,
-        explanation: "Incorrect. The molecule has a single chiral center and lacks any internal plane of symmetry (meso), meaning it is optically active and chiral, not a racemic mixture."
-      },
-      {
-        text: "(2R, 3S)-Glyceraldehyde",
-        isCorrect: false,
-        explanation: "Incorrect. Glyceraldehyde only has a single chiral center at C2, so naming it with multiple chiral center designations is structurally invalid."
-      }
-    ]
-  },
-  {
     id: 1,
     examType: "OpenStax",
-    chapter: "Ch 19: Diels-Alder and Pericyclics",
-    questionText: "Identify the major organic product of the thermal $[4+2]$ cycloaddition (Diels-Alder reaction) between 1,3-butadiene and maleic anhydride.",
-    scheme: {
-      reactants: ["C=CC=C", "O=C1C=CC(=O)O1"],
-      reagents: "Heat ($\\Delta$)",
-      conditions: "",
-      products: ["O=C1C2C=CCC2C(=O)O1"]
-    },
-    tags: ["Pericyclic Reactions", "Diels-Alder"],
-    hint: "Recall that the Diels-Alder reaction proceeds via a concerted mechanism. The cis-relationship of the carbonyl groups in the starting cyclic anhydride is preserved in the product.",
-    textbookRef: "OpenStax Section 14.3",
-    textbookUrl: "https://openstax.org/books/organic-chemistry/pages/14-3-the-diels-alder-cycloaddition-reaction",
+    chapter: "Ch 26: Amino Acids",
+    questionText: "Match each amino acid structure to its correct name by selecting from the dropdowns.",
+    interactionType: "matching-list",
+    matchItems: [
+      { smiles: "NCC(=O)O", correctAnswer: "Glycine" },
+      { smiles: "N[C@@H](C)C(=O)O", correctAnswer: "Alanine" },
+      { smiles: "N[C@@H](CC(C)C)C(=O)O", correctAnswer: "Valine" },
+      { smiles: "N[C@@H](CO)C(=O)O", correctAnswer: "Serine" },
+      { smiles: "N[C@@H](Cc1ccccc1)C(=O)O", correctAnswer: "Phenylalanine" }
+    ],
+    matchOptions: ["Glycine", "Alanine", "Valine", "Serine", "Phenylalanine"],
+    tags: ["Amino Acids", "Matching"],
+    hint: "Look for distinguishing side chains: no side chain (Gly), methyl (Ala), isopropyl (Val), hydroxymethyl (Ser), benzyl (Phe).",
+    textbookRef: "OpenStax Section 26.1",
+    textbookUrl: "#",
     options: [
-      {
-        text: "cis-1,2,3,6-Tetrahydrophthalic anhydride",
-        isCorrect: true,
-        explanation: "Correct! The thermal $[4+2]$ cycloaddition between the diene (1,3-butadiene) and the dienophile (maleic anhydride) yields cis-1,2,3,6-tetrahydrophthalic anhydride. This pericyclic reaction is stereospecific, preserving the cis configuration of the starting anhydride carbonyls in the fused cyclohexene product."
-      },
-      {
-        text: "Cyclobut-3-ene-1,2-dicarboxylic anhydride",
-        isCorrect: false,
-        explanation: "Incorrect. A cyclobutene ring would be the product of a $[2+2]$ cycloaddition. Under thermal conditions, a $[2+2]$ cycloaddition is symmetry-forbidden in the ground state."
-      },
-      {
-        text: "Dimethyl cyclohex-4-ene-1,2-dicarboxylate",
-        isCorrect: false,
-        explanation: "Incorrect. This product would form if dimethyl maleate was utilized as the dienophile. Because maleic anhydride is used, the cyclic anhydride ring is retained."
-      },
-      {
-        text: "Bicyclo[2.2.1]hept-5-ene-2,3-dicarboxylic anhydride",
-        isCorrect: false,
-        explanation: "Incorrect. This bridged bicyclic adduct (norbornene derivative) is the product of maleic anhydride reacting with cyclopentadiene (a cyclic diene), not the acyclic 1,3-butadiene."
-      }
+      { text: "All matched correctly", isCorrect: true, explanation: "Glycine has no side chain (H). Alanine has a methyl group. Valine has an isopropyl group. Serine has a hydroxymethyl group. Phenylalanine has a benzyl group." }
     ]
   },
   {
     id: 2,
     examType: "OpenStax",
-    chapter: "Ch 21: Carbonyl Condensations",
-    questionText: "Which conjugated $\\alpha,\\beta$-unsaturated product is formed from the base-catalyzed self-condensation of acetone ($\\ce{(CH3)2CO}$) under heating conditions?",
-    scheme: {
-      reactants: ["CC(=O)C", "CC(=O)C"],
-      reagents: "$\\ce{NaOH}$",
-      conditions: "Heat ($\\Delta$)",
-      products: ["CC(C)=CC(=O)C"]
-    },
-    tags: ["Carbonyl Chemistry", "Aldol Condensation"],
-    hint: "The reaction begins with the extraction of an $\\alpha$-proton by hydroxide ($\\ce{OH-}$), followed by nucleophilic addition to a second acetone molecule. Heating induces $\\text{E1cB}$ dehydration.",
-    textbookRef: "OpenStax Section 22.3",
-    textbookUrl: "https://openstax.org/books/organic-chemistry/pages/22-3-carbonyl-condensation-reactions-aldol-condensation-reactions-of-aldehydes-and-ketones",
+    chapter: "Ch 25: Carbohydrates",
+    questionText: "Identify each D-aldohexose Fischer projection by selecting its name from the dropdown.",
+    interactionType: "matching-grid",
+    gridColumns: 4,
+    gridItems: [
+      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Glucose" },
+      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Galactose" },
+      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Mannose" },
+      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Allose" },
+      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Altrose" },
+      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{OH}", right: "\\text{H}" }] }, correctAnswer: "D-Gulose" },  
+      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Idose" },
+      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Talose" }
+    ],
+    gridOptions: ["D-Glucose", "D-Galactose", "D-Mannose", "D-Allose", "D-Altrose", "D-Gulose", "D-Idose", "D-Talose"],
+    tags: ["Carbohydrates", "Fischer Projections", "D-Aldohexoses"],
+    hint: "Remember the mnemonic: All Altruists Gladly Make Gum In Gallon Tanks. The OH pattern on C2-C5 distinguishes each sugar.",
+    textbookRef: "OpenStax Section 25.2",
+    textbookUrl: "#",
     options: [
-      {
-        text: "4-Methylpent-3-en-2-one (Mesityl oxide)",
-        isCorrect: true,
-        explanation: "Correct! The base-catalyzed self-condensation of acetone begins with enolate formation and nucleophilic addition to another acetone molecule, yielding diacetone alcohol. Heating induces $\\text{E1cB}$ elimination of water ($\\ce{H2O}$) to form the conjugated $\\alpha,\\beta$-unsaturated ketone, mesityl oxide."
-      },
-      {
-        text: "4-Hydroxy-4-methylpentan-2-one (Diacetone alcohol)",
-        isCorrect: false,
-        explanation: "Incorrect. Diacetone alcohol is the aldol addition product. While it is the intermediate, heating forces dehydration (loss of water) to yield the conjugated condensation product, mesityl oxide."
-      },
-      {
-        text: "2-Methylpent-2-enal",
-        isCorrect: false,
-        explanation: "Incorrect. 2-Methylpent-2-enal is the aldol condensation product of two molecules of propionaldehyde (propanal), not acetone."
-      },
-      {
-        text: "2,6-Dimethylhepta-2,5-dien-4-one (Phorone)",
-        isCorrect: false,
-        explanation: "Incorrect. Phorone is a double-condensation product formed when a third molecule of acetone condenses with mesityl oxide under prolonged basic conditions with heat."
-      }
+      { text: "All matched correctly", isCorrect: true, explanation: "The 8 D-aldohexoses differ only in the stereochemistry at C2, C3, C4, and C5. D-Glucose: R-L-R-R. D-Galactose: R-L-L-R. D-Mannose: L-L-R-R. D-Allose: R-R-R-R. D-Altrose: R-R-L-R. D-Gulose: R-L-L-L. D-Idose: L-R-L-R. D-Talose: L-L-L-R." }
     ]
   },
   {
     id: 3,
     examType: "ACS",
-    topic: "Aromaticity and EAS",
-    questionText: "Predict the major organic product obtained from the electrophilic aromatic nitration of benzaldehyde using concentrated $\\ce{HNO3}$ and $\\ce{H2SO4}$.",
-    scheme: {
-      reactants: ["O=Cc1ccccc1"],
-      reagents: "$\\ce{HNO3}$, $\\ce{H2SO4}$",
-      conditions: "",
-      products: ["O=Cc1cccc(c1)[N+](=O)[O-]"]
-    },
-    tags: ["Electrophilic Aromatic Substitution", "Directing Groups"],
-    hint: "The formyl group ($\\ce{-CHO}$) is strongly electron-withdrawing by resonance and induction. How does placing positive charges on the ortho and para positions affect directing ability?",
-    textbookRef: "OpenStax Section 16.2",
-    textbookUrl: "https://openstax.org/books/organic-chemistry/pages/16-2-electrophilic-aromatic-substitution-reactions-nitration-and-sulfonation",
+    topic: "Amines and Heterocycles",
+    questionText: "Rank the following amines in order of increasing basicity (weakest base → strongest base) using the dropdowns below.",
+    interactionType: "ranking",
+    rankItems: [
+      { smiles: "Nc1ccccc1", label: "Aniline" },
+      { smiles: "NC1CCCCC1", label: "Cyclohexylamine" },
+      { smiles: "Nc1ccc([N+](=O)[O-])cc1", label: "p-Nitroaniline" },
+      { smiles: "CCNCC", label: "Diethylamine" }
+    ],
+    correctRanking: ["C", "A", "B", "D"],
+    tags: ["Amines", "Basicity", "Ranking"],
+    hint: "Aromatic amines are weaker bases than aliphatic amines. Electron-withdrawing groups (like -NO₂) further reduce basicity. Secondary aliphatic amines are among the strongest.",
+    textbookRef: "OpenStax Section 24.3",
+    textbookUrl: "#",
     options: [
-      {
-        text: "3-Nitrobenzaldehyde (meta-product)",
-        isCorrect: true,
-        explanation: "Correct! The formyl group ($\\ce{-CHO}$) is highly electron-withdrawing. Resonance structures place positive charges on the ortho and para positions of the benzene ring, making them heavily deactivated. The incoming electrophile ($\\ce{NO2+}$) is thus directed to the meta position (3-position)."
-      },
-      {
-        text: "4-Nitrobenzaldehyde (para-product)",
-        isCorrect: false,
-        explanation: "Incorrect. The aldehyde group is electron-withdrawing and deactivates the para position by placing a formal positive resonance charge on it, directing electrophiles meta."
-      },
-      {
-        text: "2-Nitrobenzaldehyde (ortho-product)",
-        isCorrect: false,
-        explanation: "Incorrect. Similar to the para position, the ortho position is deactivated by the carbonyl resonance, directing the electrophilic attack to the meta position."
-      },
-      {
-        text: "2,4-Dinitrobenzaldehyde",
-        isCorrect: false,
-        explanation: "Incorrect. Since both the formyl group and the first nitro group are strongly deactivating, the ring is too deactivated to undergo a second nitration under standard nitrating conditions."
-      }
+      { text: "C < A < B < D", isCorrect: true, explanation: "p-Nitroaniline (C) is the weakest base — the nitro group strongly withdraws electron density by resonance. Aniline (A) is next — the benzene ring delocalizes the nitrogen lone pair. Cyclohexylamine (B) is a simple aliphatic amine with no resonance delocalization. Diethylamine (D) is the strongest — two electron-donating alkyl groups increase basicity, and secondary amines are generally stronger bases than primary." }
     ]
   },
   {
     id: 4,
-    examType: "ACS",
-    topic: "Carboxylic Acid Derivatives",
-    questionText: "What is the final product formed when excess phenylmagnesium bromide ($\\ce{PhMgBr}$) reacts with methyl benzoate ($\\ce{C6H5CO2CH3}$), followed by treatment with aqueous acid ($\\ce{H3O+}$)?",
-    scheme: {
-      reactants: ["O=C(OC)c1ccccc1"],
-      reagents: "1. excess $\\ce{PhMgBr}$, $\\ce{Et2O}$\n2. $\\ce{H3O+}$",
-      conditions: "",
-      products: ["OC(c1ccccc1)(c1ccccc1)c1ccccc1"]
-    },
-    tags: ["Organometallic Chemistry", "Grignard Reagents"],
-    hint: "Esters react with two equivalents of Grignard reagents. The intermediate ketone (benzophenone) is more electrophilic than the starting ester and is immediately attacked by a second equivalent.",
-    textbookRef: "OpenStax Section 21.6",
-    textbookUrl: "https://openstax.org/books/organic-chemistry/pages/21-6-carboxylic-acid-derivatives-reactions-with-grignard-reagents",
+    examType: "OpenStax",
+    chapter: "Ch 25: Carbohydrates",
+    questionText: "Identify each glucopyranose anomer shown in the Haworth projections below.",
+    interactionType: "matching-grid",
+    gridColumns: 2,
+    gridItems: [
+      { media: { type: "haworth", c1: { bottom: "\\text{OH}", top: "\\text{H}" }, c2: { bottom: "\\text{H}", top: "\\text{OH}" }, c3: { bottom: "\\text{OH}", top: "\\text{H}" }, c4: { bottom: "\\text{H}", top: "\\text{OH}" }, c5: { top: "\\text{CH}_2\\text{OH}" } }, correctAnswer: "α-D-Glucopyranose" },
+      { media: { type: "haworth", c1: { bottom: "\\text{H}", top: "\\text{OH}" }, c2: { bottom: "\\text{H}", top: "\\text{OH}" }, c3: { bottom: "\\text{OH}", top: "\\text{H}" }, c4: { bottom: "\\text{H}", top: "\\text{OH}" }, c5: { top: "\\text{CH}_2\\text{OH}" } }, correctAnswer: "β-D-Glucopyranose" }
+    ],
+    gridOptions: ["α-D-Glucopyranose", "β-D-Glucopyranose", "α-D-Galactopyranose", "β-D-Galactopyranose"],
+    tags: ["Carbohydrates", "Haworth Projections", "Anomers"],
+    hint: "In α-anomers, the anomeric hydroxyl at C1 is trans (axial/down in Haworth) to the CH₂OH group. In β-anomers, it is cis (equatorial/up in Haworth).",
+    textbookRef: "OpenStax Section 25.5",
+    textbookUrl: "#",
     options: [
-      {
-        text: "Triphenylmethanol",
-        isCorrect: true,
-        explanation: "Correct! Phenylmagnesium bromide (Grignard reagent) attacks the ester group of methyl benzoate ($\\ce{C6H5CO2CH3}$). The tetrahedral intermediate collapses to form benzophenone ($\\ce{Ph2C=O}$), which reacts immediately with a second equivalent of Grignard reagent. Acidic workup ($\\ce{H3O+}$) yields the tertiary alcohol triphenylmethanol."
-      },
-      {
-        text: "Benzophenone",
-        isCorrect: false,
-        explanation: "Incorrect. Benzophenone is the intermediate ketone. However, because ketones are much more reactive than esters toward nucleophilic attack, benzophenone cannot be isolated and reacts rapidly with a second equivalent of the Grignard reagent."
-      },
-      {
-        text: "Methyl 3-phenylbenzoate",
-        isCorrect: false,
-        explanation: "Incorrect. The Grignard reagent is a carbon nucleophile that attacks the electrophilic carbonyl carbon of the ester, not the aromatic ring."
-      },
-      {
-        text: "Phenol",
-        isCorrect: false,
-        explanation: "Incorrect. Phenol is a single-ring aromatic alcohol. Esters react with Grignard reagents to yield tertiary alcohols containing three carbon ligands."
-      }
+      { text: "All matched correctly", isCorrect: true, explanation: "In the α-anomer, the OH on C1 points downward (same side as the ring oxygen's reference plane). In the β-anomer, the C1 OH points upward. Both share the same D-glucose configuration at C2-C5." }
     ]
   }
 ];
@@ -496,7 +310,9 @@ function renderMedia(media, container, isReview = false) {
     activeChartInstance = null;
   }
 
-  if (media.type === 'spectroscopy') {
+  if (media.type === 'scheme') {
+    renderDynamicScheme(isReview ? media.schemeData : { ...media.schemeData, products: ['?'] }, container, !isReview);
+  } else if (media.type === 'spectroscopy') {
     const wrapper = document.createElement('div');
     wrapper.className = 'chart-container';
     const canvas = document.createElement('canvas');
@@ -505,12 +321,12 @@ function renderMedia(media, container, isReview = false) {
     container.appendChild(wrapper);
 
     const ctx = canvas.getContext('2d');
-    
+
     if (media.specType === 'ms') {
       const maxMass = Math.max(...media.dataPoints.map(p => p.x)) + 5;
       const allLabels = [];
       for (let i = 0; i <= maxMass; i++) allLabels.push(i);
-      
+
       const dataMap = {};
       media.dataPoints.forEach(p => { dataMap[p.x] = p.y; });
       const fullData = allLabels.map(x => dataMap[x] || 0);
@@ -534,7 +350,7 @@ function renderMedia(media, container, isReview = false) {
           plugins: {
             legend: { display: false },
             tooltip: {
-              filter: function(tooltipItem) {
+              filter: function (tooltipItem) {
                 return tooltipItem.raw > 0;
               },
               callbacks: {
@@ -561,7 +377,7 @@ function renderMedia(media, container, isReview = false) {
                 autoSkip: false,
                 maxRotation: 0,
                 minRotation: 0,
-                callback: function(value, index) {
+                callback: function (value, index) {
                   if (allLabels[index] % 5 === 0) {
                     return allLabels[index];
                   }
@@ -569,11 +385,11 @@ function renderMedia(media, container, isReview = false) {
                 }
               },
               grid: {
-                color: function(context) {
+                color: function (context) {
                   if (context.index % 5 === 0) return '#3f3f46';
                   return '#1e1e24';
                 },
-                lineWidth: function(context) {
+                lineWidth: function (context) {
                   return context.index % 5 === 0 ? 1.5 : 0.8;
                 }
               }
@@ -609,39 +425,39 @@ function renderMedia(media, container, isReview = false) {
       const peakComponents = [];
       media.dataPoints.forEach(dp => {
         const x0 = dp.x;
-        const totalArea = dp.y; 
+        const totalArea = dp.y;
         const label = dp.label || 'singlet';
-        
+
         let subPeaks = [];
-        const J = 0.03; 
-        
+        const J = 0.03;
+
         if (label === 'singlet') {
           subPeaks.push({ x: x0, fraction: 1.0 });
         } else if (label === 'doublet') {
-          subPeaks.push({ x: x0 - J/2, fraction: 0.5 });
-          subPeaks.push({ x: x0 + J/2, fraction: 0.5 });
+          subPeaks.push({ x: x0 - J / 2, fraction: 0.5 });
+          subPeaks.push({ x: x0 + J / 2, fraction: 0.5 });
         } else if (label === 'triplet') {
           subPeaks.push({ x: x0 - J, fraction: 0.25 });
-          subPeaks.push({ x: x0,     fraction: 0.50 });
+          subPeaks.push({ x: x0, fraction: 0.50 });
           subPeaks.push({ x: x0 + J, fraction: 0.25 });
         } else if (label === 'quartet') {
-          subPeaks.push({ x: x0 - 1.5*J, fraction: 0.125 });
-          subPeaks.push({ x: x0 - 0.5*J, fraction: 0.375 });
-          subPeaks.push({ x: x0 + 0.5*J, fraction: 0.375 });
-          subPeaks.push({ x: x0 + 1.5*J, fraction: 0.125 });
+          subPeaks.push({ x: x0 - 1.5 * J, fraction: 0.125 });
+          subPeaks.push({ x: x0 - 0.5 * J, fraction: 0.375 });
+          subPeaks.push({ x: x0 + 0.5 * J, fraction: 0.375 });
+          subPeaks.push({ x: x0 + 1.5 * J, fraction: 0.125 });
         } else {
-          subPeaks.push({ x: x0 - 2*J, fraction: 0.0625 });
-          subPeaks.push({ x: x0 - J,   fraction: 0.25 });
-          subPeaks.push({ x: x0,       fraction: 0.375 });
-          subPeaks.push({ x: x0 + J,   fraction: 0.25 });
-          subPeaks.push({ x: x0 + 2*J, fraction: 0.0625 });
+          subPeaks.push({ x: x0 - 2 * J, fraction: 0.0625 });
+          subPeaks.push({ x: x0 - J, fraction: 0.25 });
+          subPeaks.push({ x: x0, fraction: 0.375 });
+          subPeaks.push({ x: x0 + J, fraction: 0.25 });
+          subPeaks.push({ x: x0 + 2 * J, fraction: 0.0625 });
         }
 
         subPeaks.forEach(sp => {
           peakComponents.push({
             xc: sp.x,
-            height: totalArea * sp.fraction * 15, 
-            sigma: 0.008 
+            height: totalArea * sp.fraction * 15,
+            sigma: 0.008
           });
         });
       });
@@ -754,61 +570,27 @@ function renderMedia(media, container, isReview = false) {
 
     const ctx = canvas.getContext('2d');
 
-    const rEnergy = media.points[0].energy;
-    const tsEnergy = media.points[1].energy;
-    const pEnergy = media.points[2].energy;
-
-    const curvePoints = [];
-    const steps = 30; // 30 points per half, 60 points total
-
-    // First half: Reactants to TS (starts with a flat reactant shelf, then rises steeply)
-    for (let i = 0; i <= steps; i++) {
-      const t = i / steps; // 0 to 1
-      let energy;
-      if (t < 0.6) {
-        energy = rEnergy;
-      } else {
-        const u = (t - 0.6) / 0.4;
-        energy = rEnergy + (tsEnergy - rEnergy) * (1 - Math.cos(u * Math.PI)) / 2;
-      }
-      curvePoints.push({ x: t, y: energy });
-    }
-
-    // Second half: TS to Products (falls steeply, then levels out into a flat product shelf)
-    for (let i = 1; i <= steps; i++) {
-      const t = i / steps; // 0 to 1
-      let energy;
-      if (t > 0.4) {
-        energy = pEnergy;
-      } else {
-        const u = t / 0.4;
-        energy = pEnergy + (tsEnergy - pEnergy) * (1 + Math.cos(u * Math.PI)) / 2;
-      }
-      curvePoints.push({ x: 1 + t, y: energy });
-    }
+    const pointsData = media.points.map((p, i) => ({ x: i, y: p.energy }));
+    const maxEnergy = Math.max(...media.points.map(p => p.energy));
 
     const chartInstance = new Chart(ctx, {
-      type: 'scatter',
+      type: 'line',
       data: {
         datasets: [
           {
             label: 'Energy Path',
-            data: curvePoints,
+            data: pointsData,
             borderColor: '#00e676',
             backgroundColor: 'rgba(0, 230, 118, 0.05)',
             fill: true,
-            tension: 0, // already smoothed mathematically
+            tension: 0.4, // smooth curve
             borderWidth: 3,
             pointRadius: 0,
             showLine: true
           },
           {
             label: 'Key States',
-            data: [
-              { x: 0, y: rEnergy, stateLabel: media.points[0].state },
-              { x: 1, y: tsEnergy, stateLabel: media.points[1].state },
-              { x: 2, y: pEnergy, stateLabel: media.points[2].state }
-            ],
+            data: media.points.map((p, i) => ({ x: i, y: p.energy, stateLabel: p.state })),
             borderColor: '#00e676',
             backgroundColor: '#00e676',
             pointRadius: 8,
@@ -827,14 +609,8 @@ function renderMedia(media, container, isReview = false) {
               title: (context) => {
                 if (!context || !context.length) return 'Reaction Progress';
                 const item = context[0];
-                if (item && item.datasetIndex === 1 && item.raw && item.raw.stateLabel) {
+                if (item && item.raw && item.raw.stateLabel) {
                   return item.raw.stateLabel;
-                }
-                if (item && item.parsed) {
-                  const xVal = Math.round(item.parsed.x * 10) / 10;
-                  if (xVal === 0 && media.points && media.points[0]) return media.points[0].state;
-                  if (xVal === 1 && media.points && media.points[1]) return media.points[1].state;
-                  if (xVal === 2 && media.points && media.points[2]) return media.points[2].state;
                 }
                 return 'Reaction Progress';
               },
@@ -849,7 +625,7 @@ function renderMedia(media, container, isReview = false) {
           x: {
             type: 'linear',
             min: 0,
-            max: 2,
+            max: media.points.length - 1,
             title: {
               display: true,
               text: 'Reaction Progress',
@@ -859,11 +635,11 @@ function renderMedia(media, container, isReview = false) {
             ticks: {
               color: '#a0a0ab',
               font: { family: 'Outfit', weight: 'bold', size: 11 },
-              callback: function(value) {
-                const val = Math.round(value * 10) / 10;
-                if (val === 0 && media.points && media.points[0]) return media.points[0].state;
-                if (val === 1 && media.points && media.points[1]) return media.points[1].state;
-                if (val === 2 && media.points && media.points[2]) return media.points[2].state;
+              callback: function (value) {
+                const val = Math.round(value);
+                if (val === value && media.points[val]) {
+                  return media.points[val].state;
+                }
                 return '';
               }
             },
@@ -879,7 +655,7 @@ function renderMedia(media, container, isReview = false) {
             },
             ticks: { color: '#a0a0ab' },
             grid: { color: '#27272a' },
-            max: Math.max(rEnergy, tsEnergy, pEnergy) + 30
+            max: maxEnergy + 30
           }
         }
       }
@@ -893,27 +669,27 @@ function renderMedia(media, container, isReview = false) {
     const ys = media.nodes.map(n => n.y);
     const maxX = Math.max(...xs, 1);
     const maxY = Math.max(...ys, 1);
-    
+
     const roadmapContainer = document.createElement('div');
     roadmapContainer.className = 'roadmap-container';
-    
+
     const grid = document.createElement('div');
     grid.className = 'roadmap-grid';
     grid.style.gridTemplateColumns = `repeat(${maxX}, 150px)`;
     grid.style.gridTemplateRows = `repeat(${maxY}, 110px)`;
-    
+
     roadmapContainer.appendChild(grid);
     container.appendChild(roadmapContainer);
-    
+
     media.nodes.forEach(node => {
       const nodeEl = document.createElement('div');
       nodeEl.className = 'roadmap-node';
       nodeEl.style.gridColumn = node.x;
       nodeEl.style.gridRow = node.y;
       nodeEl.setAttribute('data-coord', `${node.x},${node.y}`);
-      
+
       const canvasId = `roadmap-canvas-${Math.random().toString(36).substr(2, 9)}`;
-      
+
       const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       svg.setAttribute('class', 'smiles-render');
       svg.setAttribute('id', canvasId);
@@ -922,7 +698,7 @@ function renderMedia(media, container, isReview = false) {
       svg.style.height = '100%';
       nodeEl.appendChild(svg);
       grid.appendChild(nodeEl);
-      
+
       const nodeDrawer = new SmilesDrawer.SvgDrawer({
         ...options,
         width: 150,
@@ -933,18 +709,18 @@ function renderMedia(media, container, isReview = false) {
         bondThickness: 1.2,
         bondSpacing: 2.0
       });
-      
+
       SmilesDrawer.parse(node.smiles, (tree) => {
         nodeDrawer.draw(tree, canvasId, 'dark');
       }, (err) => {
         console.error("Roadmap node parsing error: ", err);
       });
     });
-    
+
     const svgOverlay = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svgOverlay.setAttribute('class', 'roadmap-arrows-overlay');
     grid.appendChild(svgOverlay);
-    
+
     const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
     const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
     marker.setAttribute('id', 'roadmap-arrowhead');
@@ -954,40 +730,40 @@ function renderMedia(media, container, isReview = false) {
     marker.setAttribute('markerWidth', '6');
     marker.setAttribute('markerHeight', '6');
     marker.setAttribute('orient', 'auto-start-reverse');
-    
+
     const markerPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     markerPath.setAttribute('d', 'M 0 0 L 10 5 L 0 10 z');
     markerPath.setAttribute('fill', '#ffffff');
     marker.appendChild(markerPath);
     defs.appendChild(marker);
     svgOverlay.appendChild(defs);
-    
+
     setTimeout(() => {
       const gridRect = grid.getBoundingClientRect();
-      
+
       media.edges.forEach(edge => {
         const fromNode = grid.querySelector(`[data-coord="${edge.from[0]},${edge.from[1]}"]`);
         const toNode = grid.querySelector(`[data-coord="${edge.to[0]},${edge.to[1]}"]`);
-        
+
         if (fromNode && toNode) {
           const fromRect = fromNode.getBoundingClientRect();
           const toRect = toNode.getBoundingClientRect();
-          
+
           const x1 = fromRect.left - gridRect.left + fromRect.width / 2;
           const y1 = fromRect.top - gridRect.top + fromRect.height / 2;
           const x2 = toRect.left - gridRect.left + toRect.width / 2;
           const y2 = toRect.top - gridRect.top + toRect.height / 2;
-          
+
           const angle = Math.atan2(y2 - y1, x2 - x1);
-          
-          const fromOffset = 70; 
+
+          const fromOffset = 70;
           const toOffset = 70;
-          
+
           const startX = x1 + Math.cos(angle) * fromOffset;
           const startY = y1 + Math.sin(angle) * (fromOffset * 0.7);
           const endX = x2 - Math.cos(angle) * toOffset;
           const endY = y2 - Math.sin(angle) * (toOffset * 0.7);
-          
+
           const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
           line.setAttribute('x1', startX);
           line.setAttribute('y1', startY);
@@ -997,10 +773,10 @@ function renderMedia(media, container, isReview = false) {
           line.setAttribute('stroke-width', '2');
           line.setAttribute('marker-end', 'url(#roadmap-arrowhead)');
           svgOverlay.appendChild(line);
-          
+
           const midX = (startX + endX) / 2;
           const midY = (startY + endY) / 2;
-          
+
           const label = document.createElement('div');
           label.className = 'roadmap-reagent-label';
           label.style.position = 'absolute';
@@ -1008,7 +784,7 @@ function renderMedia(media, container, isReview = false) {
           label.style.top = `${midY}px`;
           label.style.transform = 'translate(-50%, -130%)';
           label.textContent = edge.reagents;
-          
+
           grid.appendChild(label);
           renderMath(label);
         }
@@ -1021,94 +797,366 @@ function renderMedia(media, container, isReview = false) {
     const fischerGrid = document.createElement('div');
     fischerGrid.className = 'fischer-grid';
     
-    const lineH = document.createElement('div');
-    lineH.className = 'fischer-line-h';
-    const lineV = document.createElement('div');
-    lineV.className = 'fischer-line-v';
-    fischerGrid.appendChild(lineH);
-    fischerGrid.appendChild(lineV);
-    
+        // For a left substituent (e.g. "\text{OH}" or "\text{H}"), the atom
+    // touching the horizontal bond line should be the FIRST atom of the
+    // group (O in OH, H in H). For a right substituent the FIRST atom also
+    // touches the line.
+    // Strategy: always split so the FIRST capital letter (+ optional lowercase)
+    // is the "center" atom rendered flush with the line, and the remaining
+    // text is the "rest" displayed away from the line.
     const splitFischerSub = (str, dir) => {
       if (!str) return { center: '', rest: '' };
       if (str.startsWith('\\text{')) {
         const contentMatch = str.match(/^\\text\{([^}]+)\}(.*)$/);
         if (contentMatch) {
-          const content = contentMatch[1]; 
-          const afterText = contentMatch[2]; 
-          
-          if (dir === 'left') {
-            const lastLetterMatch = content.match(/^(.*)([A-Z][a-z]?)$/);
-            if (lastLetterMatch) {
-              const restContent = lastLetterMatch[1]; 
-              const bondAtom = lastLetterMatch[2]; 
-              const centerPart = `\\text{${bondAtom}}`;
-              const restPart = restContent ? `\\text{${restContent}}` : '';
-              return { center: centerPart, rest: restPart + afterText };
-            }
-          } else {
-            const firstLetterMatch = content.match(/^([A-Z][a-z]?)(.*)$/);
-            if (firstLetterMatch) {
-              const bondAtom = firstLetterMatch[1]; 
-              const restContent = firstLetterMatch[2]; 
-              const centerPart = `\\text{${bondAtom}}`;
-              const restPart = (restContent ? `\\text{${restContent}}` : '') + afterText;
-              return { center: centerPart, rest: restPart };
-            }
+          const content = contentMatch[1];
+          const afterText = contentMatch[2];
+          // First atom = first capital letter + optional following lowercase letters
+          const firstAtomMatch = content.match(/^([A-Z][a-z]?)(.*)$/);
+          if (firstAtomMatch) {
+            const bondAtom = firstAtomMatch[1];
+            const restContent = firstAtomMatch[2];
+            const centerPart = `\\text{${bondAtom}}`;
+            const restPart = (restContent ? `\\text{${restContent}}` : '') + afterText;
+            return { center: centerPart, rest: restPart };
           }
         }
       }
       return { center: str, rest: '' };
     };
-
+    
     const createSub = (text, gridColumn, gridRow, dir = 'right') => {
       const el = document.createElement('div');
       el.className = 'fischer-substituent';
       el.style.gridColumn = gridColumn;
       el.style.gridRow = gridRow;
-      
       const split = splitFischerSub(text, dir);
       if (split.rest) {
         const wrapper = document.createElement('span');
         wrapper.className = 'fischer-sub-wrapper';
-        
         const centerSpan = document.createElement('span');
         centerSpan.textContent = `$${split.center}$`;
         wrapper.appendChild(centerSpan);
-        
         const restSpan = document.createElement('span');
         restSpan.className = dir === 'left' ? 'fischer-sub-rest-left' : 'fischer-sub-rest-right';
         restSpan.textContent = `$${split.rest}$`;
         wrapper.appendChild(restSpan);
-        
         el.appendChild(wrapper);
       } else {
         el.textContent = text ? `$${text}$` : '';
       }
       return el;
     };
-    
-    const topEl = createSub(media.top, '2', '1', 'right');
-    const bottomEl = createSub(media.bottom, '2', '3', 'right');
-    const leftEl = createSub(media.left, '1', '2', 'left');
-    const rightEl = createSub(media.right, '3', '2', 'right');
-    
-    fischerGrid.appendChild(topEl);
-    fischerGrid.appendChild(bottomEl);
-    fischerGrid.appendChild(leftEl);
-    fischerGrid.appendChild(rightEl);
-    
-    if (media.center) {
-      const centerEl = document.createElement('div');
-      centerEl.className = 'fischer-center';
-      centerEl.style.gridColumn = '2';
-      centerEl.style.gridRow = '2';
-      centerEl.textContent = `$${media.center}$`;
-      fischerGrid.appendChild(centerEl);
+
+        if (media.centers && Array.isArray(media.centers)) {
+      const N = media.centers.length;
+      // 64px columns × 3, 48px rows for each chiral center, 56px for top/bottom
+      fischerGrid.style.gridTemplateColumns = 'repeat(3, 64px)';
+      fischerGrid.style.gridTemplateRows = `56px repeat(${N}, 48px) 56px`;
+      const lineV = document.createElement('div');
+      lineV.className = 'fischer-line-v';
+      lineV.style.gridColumn = '2';
+      lineV.style.gridRow = `1 / ${N + 3}`;
+      // Let align-self: stretch (from CSS) handle the height; just nudge via padding
+      lineV.style.marginTop = '28px';   // half of top row
+      lineV.style.marginBottom = '28px'; // half of bottom row
+      fischerGrid.appendChild(lineV);
+      for (let i = 0; i < N; i++) {
+        const lineH = document.createElement('div');
+        lineH.className = 'fischer-line-h';
+        lineH.style.gridColumn = '1 / 4';
+        lineH.style.gridRow = `${i + 2}`;
+        lineH.style.width = 'calc(100% - 80px)';
+        lineH.style.margin = '0 auto';
+        fischerGrid.appendChild(lineH);
+      }
+      fischerGrid.appendChild(createSub(media.top, '2', '1', 'right'));
+      fischerGrid.appendChild(createSub(media.bottom, '2', `${N + 2}`, 'right'));
+      media.centers.forEach((center, i) => {
+        fischerGrid.appendChild(createSub(center.left, '1', `${i + 2}`, 'left'));
+        fischerGrid.appendChild(createSub(center.right, '3', `${i + 2}`, 'right'));
+      });
+    } else {
+      fischerGrid.style.gridTemplateColumns = 'repeat(3, 64px)';
+      fischerGrid.style.gridTemplateRows = 'repeat(3, 64px)';
+      const lineH = document.createElement('div');
+      lineH.className = 'fischer-line-h';
+      const lineV = document.createElement('div');
+      lineV.className = 'fischer-line-v';
+      fischerGrid.appendChild(lineH);
+      fischerGrid.appendChild(lineV);
+      fischerGrid.appendChild(createSub(media.top, '2', '1', 'right'));
+      fischerGrid.appendChild(createSub(media.bottom, '2', '3', 'right'));
+      fischerGrid.appendChild(createSub(media.left, '1', '2', 'left'));
+      fischerGrid.appendChild(createSub(media.right, '3', '2', 'right'));
+      if (media.center) {
+        const centerEl = document.createElement('div');
+        centerEl.className = 'fischer-center';
+        centerEl.style.gridColumn = '2';
+        centerEl.style.gridRow = '2';
+        centerEl.textContent = `$${media.center}$`;
+        fischerGrid.appendChild(centerEl);
+      }
     }
-    
     fischerContainer.appendChild(fischerGrid);
     container.appendChild(fischerContainer);
     renderMath(fischerContainer);
+  } else if (media.type === 'newman') {
+    const newmanContainer = document.createElement('div');
+    newmanContainer.className = 'newman-container';
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 200 200');
+    svg.style.width = '200px';
+    svg.style.height = '200px';
+
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('cx', '100');
+    circle.setAttribute('cy', '100');
+    circle.setAttribute('r', '50');
+    circle.setAttribute('fill', 'none');
+    circle.setAttribute('stroke', '#ffffff');
+    circle.setAttribute('stroke-width', '2');
+    svg.appendChild(circle);
+
+    const drawLine = (x1, y1, x2, y2) => {
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', x1);
+      line.setAttribute('y1', y1);
+      line.setAttribute('x2', x2);
+      line.setAttribute('y2', y2);
+      line.setAttribute('stroke', '#ffffff');
+      line.setAttribute('stroke-width', '2');
+      svg.appendChild(line);
+    };
+
+    drawLine(100, 100, 100, 40); // Front top
+    drawLine(100, 100, 152, 130); // Front right
+    drawLine(100, 100, 48, 130); // Front left
+
+    drawLine(100, 150, 100, 180); // Back bottom
+    drawLine(143.3, 75, 178, 55); // Back right
+    drawLine(56.7, 75, 22, 55); // Back left
+
+    newmanContainer.appendChild(svg);
+
+    const addLabel = (text, cls) => {
+      if (!text) return;
+      const label = document.createElement('div');
+      label.className = `newman-label ${cls}`;
+      label.textContent = `$${text}$`;
+      newmanContainer.appendChild(label);
+    };
+
+    if (media.front) {
+      addLabel(media.front.top, 'front-top');
+      addLabel(media.front.right, 'front-right');
+      addLabel(media.front.left, 'front-left');
+    }
+    if (media.back) {
+      addLabel(media.back.bottom, 'back-bottom');
+      addLabel(media.back.right, 'back-right');
+      addLabel(media.back.left, 'back-left');
+    }
+
+    container.appendChild(newmanContainer);
+    renderMath(newmanContainer);
+  } else if (media.type === 'chair') {
+    const chairContainer = document.createElement('div');
+    chairContainer.className = 'chair-container';
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 400 300');
+    svg.style.width = '400px';
+    svg.style.height = '300px';
+
+    // Thin Back Ring Bonds (pointing away)
+    const backPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    backPath.setAttribute('d', 'M 280 130 L 240 110 L 150 130');
+    backPath.setAttribute('fill', 'none');
+    backPath.setAttribute('stroke', '#ffffff');
+    backPath.setAttribute('stroke-width', '2.5');
+    backPath.setAttribute('stroke-linecap', 'round');
+    backPath.setAttribute('stroke-linejoin', 'round');
+    svg.appendChild(backPath);
+
+    // Thick Wedged Front Ring Bonds (facing the viewer) - Mathematically Perfect Parallel Polygons
+    const frontPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    frontPath.setAttribute('d', 'M 150 130 L 114 192 L 159.4 214.7 L 253.1 193.9 L 280 130 L 246.9 186.1 L 160.6 205.3 L 126 188 Z');
+    frontPath.setAttribute('fill', '#ffffff');
+    frontPath.setAttribute('stroke', '#ffffff');
+    frontPath.setAttribute('stroke-width', '1');
+    frontPath.setAttribute('stroke-linejoin', 'miter');
+    svg.appendChild(frontPath);
+
+    // Predefined 12 parallel Axial/Equatorial substituent bonds
+    const chairBonds = {
+      1: {
+        axial: { start: { x: 240, y: 110 }, end: { x: 240, y: 70 } },
+        equatorial: { start: { x: 240, y: 110 }, end: { x: 270, y: 125 } }
+      },
+      2: {
+        axial: { start: { x: 150, y: 130 }, end: { x: 150, y: 170 } },
+        equatorial: { start: { x: 150, y: 130 }, end: { x: 120, y: 115 } }
+      },
+      3: {
+        axial: { start: { x: 120, y: 190 }, end: { x: 120, y: 150 } },
+        equatorial: { start: { x: 120, y: 190 }, end: { x: 90, y: 205 } }
+      },
+      4: {
+        axial: { start: { x: 160, y: 210 }, end: { x: 160, y: 250 } },
+        equatorial: { start: { x: 160, y: 210 }, end: { x: 130, y: 195 } }
+      },
+      5: {
+        axial: { start: { x: 250, y: 190 }, end: { x: 250, y: 150 } },
+        equatorial: { start: { x: 250, y: 190 }, end: { x: 280, y: 205 } }
+      },
+      6: {
+        axial: { start: { x: 280, y: 130 }, end: { x: 280, y: 170 } },
+        equatorial: { start: { x: 280, y: 130 }, end: { x: 310, y: 115 } }
+      }
+    };
+
+    chairContainer.appendChild(svg);
+
+    media.substituents.forEach(sub => {
+      const config = chairBonds[sub.position]?.[sub.type];
+      if (config) {
+        // Draw bond line
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', config.start.x);
+        line.setAttribute('y1', config.start.y);
+        line.setAttribute('x2', config.end.x);
+        line.setAttribute('y2', config.end.y);
+        line.setAttribute('stroke', '#ffffff');
+        line.setAttribute('stroke-width', '2.5');
+        svg.appendChild(line);
+
+        // Place substituent label at the end coordinate using absolute HTML overlay
+        const label = document.createElement('div');
+        label.className = `chair-label pos-${sub.position}-${sub.type}`;
+        label.style.position = 'absolute';
+        label.style.left = `${config.end.x}px`;
+        label.style.top = `${config.end.y}px`;
+        label.style.transform = 'translate(-50%, -50%)';
+        label.textContent = `$${sub.label}$`;
+        chairContainer.appendChild(label);
+      }
+    });
+
+    container.appendChild(chairContainer);
+    renderMath(chairContainer);
+  } else if (media.type === 'haworth') {
+    // Haworth Projection SVG Generator
+    const haworthContainer = document.createElement('div');
+    haworthContainer.className = 'haworth-container';
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 320 250');
+    svg.style.width = '320px';
+    svg.style.height = '250px';
+
+    // Hexagon vertices (pyranose ring perspective)
+    // Back edge is top, front edge is bottom
+    const verts = [
+      { x: 60, y: 80 },    // 0: top-left (C4)
+      { x: 160, y: 60 },   // 1: top-center (O)
+      { x: 260, y: 80 },   // 2: top-right (C1)
+      { x: 260, y: 160 },  // 3: bottom-right (C2)
+      { x: 160, y: 180 },  // 4: bottom-center (C3)
+      { x: 60, y: 160 }    // 5: bottom-left (C5)
+    ];
+
+    // Draw ring bonds — bottom 3 bonds are thick (front-facing)
+    const bonds = [
+      { from: 0, to: 1, thick: false },  // C4-O (back)
+      { from: 1, to: 2, thick: false },  // O-C1 (back)
+      { from: 2, to: 3, thick: true },   // C1-C2 (front right)
+      { from: 3, to: 4, thick: true },   // C2-C3 (front bottom)
+      { from: 4, to: 5, thick: true },   // C3-C5 (front left)
+      { from: 5, to: 0, thick: false }   // C5-C4 (back left)
+    ];
+
+    bonds.forEach(bond => {
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', verts[bond.from].x);
+      line.setAttribute('y1', verts[bond.from].y);
+      line.setAttribute('x2', verts[bond.to].x);
+      line.setAttribute('y2', verts[bond.to].y);
+      line.setAttribute('stroke', '#ffffff');
+      line.setAttribute('stroke-width', bond.thick ? '5' : '2');
+      line.setAttribute('stroke-linecap', 'round');
+      svg.appendChild(line);
+    });
+
+    haworthContainer.appendChild(svg);
+
+    // Label mapping: carbon positions to vertices and substituent offsets
+    // Vertex indices: C1=2, C2=3, C3=4, C4=0, C5=5, O=1
+    const carbonMap = {
+      c1: { vertex: verts[2], topOffset: { x: 0, y: -30 }, bottomOffset: { x: 0, y: 30 } },
+      c2: { vertex: verts[3], topOffset: { x: 30, y: -20 }, bottomOffset: { x: 30, y: 20 } },
+      c3: { vertex: verts[4], topOffset: { x: 0, y: -30 }, bottomOffset: { x: 0, y: 30 } },
+      c4: { vertex: verts[0], topOffset: { x: 0, y: -30 }, bottomOffset: { x: 0, y: 30 } },
+      c5: { vertex: verts[5], topOffset: { x: -30, y: -20 }, bottomOffset: { x: -30, y: 20 } }
+    };
+
+    // Add ring oxygen label
+    const oLabel = document.createElement('div');
+    oLabel.className = 'haworth-label';
+    oLabel.style.left = `${verts[1].x}px`;
+    oLabel.style.top = `${verts[1].y - 20}px`;
+    oLabel.textContent = '$\\text{O}$';
+    haworthContainer.appendChild(oLabel);
+
+    // Add substituent labels for each carbon
+    Object.keys(carbonMap).forEach(key => {
+      const carbonData = media[key];
+      if (!carbonData) return;
+      const mapping = carbonMap[key];
+
+      if (carbonData.top) {
+        const topLabel = document.createElement('div');
+        topLabel.className = 'haworth-label';
+        topLabel.style.left = `${mapping.vertex.x + mapping.topOffset.x}px`;
+        topLabel.style.top = `${mapping.vertex.y + mapping.topOffset.y}px`;
+        topLabel.textContent = `$${carbonData.top}$`;
+        haworthContainer.appendChild(topLabel);
+      }
+      if (carbonData.bottom) {
+        const bottomLabel = document.createElement('div');
+        bottomLabel.className = 'haworth-label';
+        bottomLabel.style.left = `${mapping.vertex.x + mapping.bottomOffset.x}px`;
+        bottomLabel.style.top = `${mapping.vertex.y + mapping.bottomOffset.y}px`;
+        bottomLabel.textContent = `$${carbonData.bottom}$`;
+        haworthContainer.appendChild(bottomLabel);
+      }
+
+      // Draw short vertical bond lines from vertex to label positions
+      if (carbonData.top) {
+        const bondLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        bondLine.setAttribute('x1', mapping.vertex.x);
+        bondLine.setAttribute('y1', mapping.vertex.y);
+        bondLine.setAttribute('x2', mapping.vertex.x + mapping.topOffset.x);
+        bondLine.setAttribute('y2', mapping.vertex.y + mapping.topOffset.y + 8);
+        bondLine.setAttribute('stroke', '#ffffff');
+        bondLine.setAttribute('stroke-width', '2');
+        svg.appendChild(bondLine);
+      }
+      if (carbonData.bottom) {
+        const bondLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        bondLine.setAttribute('x1', mapping.vertex.x);
+        bondLine.setAttribute('y1', mapping.vertex.y);
+        bondLine.setAttribute('x2', mapping.vertex.x + mapping.bottomOffset.x);
+        bondLine.setAttribute('y2', mapping.vertex.y + mapping.bottomOffset.y - 8);
+        bondLine.setAttribute('stroke', '#ffffff');
+        bondLine.setAttribute('stroke-width', '2');
+        svg.appendChild(bondLine);
+      }
+    });
+
+    container.appendChild(haworthContainer);
+    renderMath(haworthContainer);
   }
 }
 
@@ -1376,6 +1424,8 @@ function getQuestionTypeLabel(question) {
       return 'Fischer Projection';
     } else if (question.media.type === 'roadmap') {
       return 'Reaction Roadmap';
+    } else if (question.media.type === 'haworth') {
+      return 'Haworth Projection';
     }
   } else if (question.scheme) {
     return 'Reaction Scheme';
@@ -1389,7 +1439,7 @@ function loadQuestion(index) {
   updateProgressBar();
 
   const question = quizQuestions[index];
-  
+
   // Update the structure card label dynamically
   const labelEl = document.getElementById('structure-card-label');
   if (labelEl) {
@@ -1403,8 +1453,14 @@ function loadQuestion(index) {
   // Question text
   document.getElementById('question-text').textContent = question.questionText;
 
-  // Hide feedback card until option selected
-  document.getElementById('feedback-card').style.display = 'none';
+  // Hide feedback card / explanation box until option selected
+  const feedbackCard = document.getElementById('feedback-card');
+  if (feedbackCard) feedbackCard.style.display = 'none';
+  const explanationBox = document.getElementById('explanation-box');
+  if (explanationBox) {
+    explanationBox.style.display = 'none';
+    explanationBox.classList.add('hidden');
+  }
 
   // Configure Helper UI (Hints & References)
   const hintBtn = document.getElementById('btn-show-hint');
@@ -1472,28 +1528,326 @@ function loadQuestion(index) {
     document.getElementById('structure-card').style.display = 'none';
   }
 
-  // Populate options grid
+  // Populate options grid — or render interactive UI
   const optionsGrid = document.getElementById('options-grid');
   optionsGrid.innerHTML = '';
 
-  const markers = ['A', 'B', 'C', 'D'];
-  question.options.forEach((opt, idx) => {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'option-btn';
-    btn.onclick = () => selectOption(idx);
-
-    btn.innerHTML = `
-      <span class="option-marker">${markers[idx]}</span>
-      <span class="option-text"></span>
-    `;
-    btn.querySelector('.option-text').textContent = opt.text;
-
-    optionsGrid.appendChild(btn);
-  });
+  if (question.interactionType) {
+    // Hide the structure card since interactive types render their own visuals
+    document.getElementById('structure-card').style.display = 'none';
+    renderInteractiveQuestion(question, optionsGrid);
+  } else {
+    // Standard multiple-choice buttons
+    const markers = ['A', 'B', 'C', 'D'];
+    question.options.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'option-btn';
+      btn.onclick = () => selectOption(idx);
+      btn.innerHTML = `
+        <span class="option-marker">${markers[idx]}</span>
+        <span class="option-text"></span>
+      `;
+      btn.querySelector('.option-text').textContent = opt.text;
+      optionsGrid.appendChild(btn);
+    });
+  }
 
   // Trigger KaTeX parsing on the entire quiz card
   renderMath(document.getElementById('quiz-screen'));
+}
+
+// ============================================================
+// INTERACTIVE QUESTION RENDERER
+// ============================================================
+function renderInteractiveQuestion(question, container) {
+  container.style.display = 'block';
+
+  // Helper to draw a SMILES structure into an SVG element
+  const drawSmiles = (smiles, parentEl, w = 180, h = 120) => {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'smiles-render');
+    const uid = `int-${Math.random().toString(36).substr(2, 9)}`;
+    svg.setAttribute('id', uid);
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    svg.style.width = '100%';
+    svg.style.height = '100%';
+    parentEl.appendChild(svg);
+    const localDrawer = new SmilesDrawer.SvgDrawer({
+      ...options,
+      width: w, height: h,
+      fontSizeLarge: 7, fontSizeSmall: 5,
+      bondLength: 15, bondThickness: 1.2, bondSpacing: 2.2
+    });
+    SmilesDrawer.parse(smiles, (tree) => {
+      localDrawer.draw(tree, uid, 'dark');
+    }, (err) => { console.error('Interactive SMILES error:', err); });
+  };
+
+  // Helper to create a styled select dropdown
+  const createSelect = (optionsList, id) => {
+    const sel = document.createElement('select');
+    sel.className = 'interactive-select';
+    sel.id = id;
+    const defaultOpt = document.createElement('option');
+    defaultOpt.value = '';
+    defaultOpt.textContent = '— Select —';
+    defaultOpt.disabled = true;
+    defaultOpt.selected = true;
+    sel.appendChild(defaultOpt);
+    optionsList.forEach(opt => {
+      const o = document.createElement('option');
+      o.value = opt;
+      o.textContent = opt;
+      sel.appendChild(o);
+    });
+    return sel;
+  };
+
+    // ---- MATCHING LIST ----
+  if (question.interactionType === 'matching-list') {
+    const listContainer = document.createElement('div');
+    listContainer.className = 'matching-list-container';
+
+    question.matchItems.forEach((item, idx) => {
+      const row = document.createElement('div');
+      row.className = 'matching-list-item';
+
+      const numEl = document.createElement('div');
+      numEl.className = 'item-number';
+      numEl.textContent = `${idx + 1}`;
+      row.appendChild(numEl);
+
+      const structDiv = document.createElement('div');
+      structDiv.className = 'item-structure';
+      row.appendChild(structDiv);
+
+      const selectWrapper = document.createElement('div');
+      selectWrapper.className = 'item-select-wrapper';
+      // Only include the correct answers as options (no extra distractors shown)
+      const sel = createSelect(question.matchOptions.filter(opt =>
+        question.matchItems.some(mi => mi.correctAnswer === opt)
+      ), `match-sel-${idx}`);
+      sel.dataset.correctAnswer = item.correctAnswer;
+      selectWrapper.appendChild(sel);
+      row.appendChild(selectWrapper);
+
+      listContainer.appendChild(row);
+    });
+
+    container.appendChild(listContainer);
+
+    // Defer SMILES rendering until the rows are in the DOM
+    setTimeout(() => {
+      question.matchItems.forEach((item, idx) => {
+        const structDiv = listContainer.querySelectorAll('.item-structure')[idx];
+        if (structDiv) drawSmiles(item.smiles, structDiv);
+      });
+    }, 0);
+
+    const submitBtn = document.createElement('button');
+    submitBtn.type = 'button';
+    submitBtn.className = 'btn-submit-interactive';
+    submitBtn.textContent = 'Submit Answer';
+    submitBtn.onclick = () => submitInteractiveAnswer(question);
+    container.appendChild(submitBtn);
+  }
+
+  // ---- MATCHING GRID ----
+  else if (question.interactionType === 'matching-grid') {
+    const cols = question.gridColumns || 4;
+    const gridContainer = document.createElement('div');
+    gridContainer.className = 'matching-grid-container';
+    gridContainer.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
+    question.gridItems.forEach((item, idx) => {
+      const cell = document.createElement('div');
+      cell.className = 'matching-grid-cell';
+
+      const structDiv = document.createElement('div');
+      structDiv.className = 'cell-structure';
+      // Render the media type (fischer, haworth, etc.) into the cell
+      renderMedia(item.media, structDiv, true);
+      cell.appendChild(structDiv);
+
+      const sel = createSelect(question.gridOptions, `grid-sel-${idx}`);
+      sel.dataset.correctAnswer = item.correctAnswer;
+      cell.appendChild(sel);
+
+      gridContainer.appendChild(cell);
+    });
+
+    container.appendChild(gridContainer);
+
+    const submitBtn = document.createElement('button');
+    submitBtn.type = 'button';
+    submitBtn.className = 'btn-submit-interactive';
+    submitBtn.textContent = 'Submit Answer';
+    submitBtn.onclick = () => submitInteractiveAnswer(question);
+    container.appendChild(submitBtn);
+  }
+
+    // ---- RANKING ----
+  else if (question.interactionType === 'ranking') {
+    const rankContainer = document.createElement('div');
+    rankContainer.className = 'ranking-container';
+
+    // Molecule cards row
+    const molRow = document.createElement('div');
+    molRow.className = 'ranking-molecules-row';
+    const labels = ['A', 'B', 'C', 'D'];
+    const rankStructDivs = [];
+
+    question.rankItems.forEach((item, idx) => {
+      const card = document.createElement('div');
+      card.className = 'ranking-molecule-card';
+
+      const structDiv = document.createElement('div');
+      structDiv.className = 'molecule-structure';
+      rankStructDivs.push({ div: structDiv, smiles: item.smiles });
+      card.appendChild(structDiv);
+
+      const labelEl = document.createElement('div');
+      labelEl.className = 'ranking-molecule-label';
+      labelEl.textContent = labels[idx];
+      card.appendChild(labelEl);
+
+      if (item.label) {
+        const nameEl = document.createElement('div');
+        nameEl.style.fontSize = '0.75rem';
+        nameEl.style.color = 'var(--text-secondary)';
+        nameEl.style.textAlign = 'center';
+        nameEl.textContent = item.label;
+        card.appendChild(nameEl);
+      }
+
+      molRow.appendChild(card);
+    });
+    rankContainer.appendChild(molRow);
+
+    // Instruction
+    const instrEl = document.createElement('div');
+    instrEl.className = 'ranking-instruction';
+    instrEl.textContent = 'Weakest base → Strongest base';
+    rankContainer.appendChild(instrEl);
+
+    // Dropdowns row with > separators
+    const ddRow = document.createElement('div');
+    ddRow.className = 'ranking-dropdowns-row';
+
+    for (let i = 0; i < question.correctRanking.length; i++) {
+      const sel = createSelect(labels, `rank-sel-${i}`);
+      sel.dataset.correctAnswer = question.correctRanking[i];
+      ddRow.appendChild(sel);
+
+      if (i < question.correctRanking.length - 1) {
+        const sep = document.createElement('span');
+        sep.className = 'ranking-separator';
+        sep.textContent = '>';
+        ddRow.appendChild(sep);
+      }
+    }
+    rankContainer.appendChild(ddRow);
+
+    container.appendChild(rankContainer);
+
+    // Defer SMILES rendering until cards are in the DOM
+    setTimeout(() => {
+      rankStructDivs.forEach(({ div, smiles }) => {
+        drawSmiles(smiles, div, 160, 110);
+      });
+    }, 0);
+
+    const submitBtn = document.createElement('button');
+    submitBtn.type = 'button';
+    submitBtn.className = 'btn-submit-interactive';
+    submitBtn.textContent = 'Submit Answer';
+    submitBtn.onclick = () => submitInteractiveAnswer(question);
+    container.appendChild(submitBtn);
+  }
+
+  // Trigger KaTeX on any rendered media
+  setTimeout(() => renderMath(container), 50);
+}
+
+// ============================================================
+// INTERACTIVE ANSWER GRADING
+// ============================================================
+function submitInteractiveAnswer(question) {
+  const allSelects = document.querySelectorAll('.interactive-select');
+  let allCorrect = true;
+
+  allSelects.forEach(sel => {
+    sel.disabled = true;
+    const correct = sel.dataset.correctAnswer;
+    if (sel.value === correct) {
+      sel.classList.add('correct');
+    } else {
+      sel.classList.add('incorrect');
+      allCorrect = false;
+    }
+  });
+
+  // Disable submit button
+  const submitBtn = document.querySelector('.btn-submit-interactive');
+  if (submitBtn) submitBtn.disabled = true;
+
+  // Record answer
+  userAnswers.push({
+    questionId: question.id,
+    chosenOptionIndex: allCorrect ? 0 : -1,
+    isCorrect: allCorrect
+  });
+
+  if (allCorrect) score++;
+
+  // Update live score
+  document.getElementById('score-display').textContent = `${score}/${quizQuestions.length}`;
+
+  // Update progress bar
+  const progressBar = document.getElementById('progress-bar-fill');
+  const percent = ((currentQuestionIndex + 1) / quizQuestions.length) * 100;
+  progressBar.style.width = `${percent}%`;
+
+  // Show feedback
+  const feedbackCard = document.getElementById('feedback-card');
+  const feedbackBadge = document.getElementById('feedback-badge');
+  const explanationBody = document.getElementById('explanation-body');
+  const nextBtn = document.getElementById('btn-next-question');
+
+  const correctOption = question.options.find(opt => opt.isCorrect);
+
+  if (allCorrect) {
+    feedbackBadge.textContent = 'Correct';
+    feedbackBadge.className = 'feedback-badge correct';
+    explanationBody.innerHTML = `<p>${correctOption.explanation}</p>`;
+  } else {
+    feedbackBadge.textContent = 'Incorrect';
+    feedbackBadge.className = 'feedback-badge incorrect';
+    explanationBody.innerHTML = `
+      <p>Some of your selections were wrong. Review the green (correct) and red (incorrect) outlines above.</p>
+      <p style="margin-top: 0.75rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+        <strong>Explanation:</strong> ${correctOption.explanation}
+      </p>
+    `;
+  }
+
+  const nextSpan = nextBtn.querySelector('span');
+  if (currentQuestionIndex === quizQuestions.length - 1) {
+    nextSpan.textContent = 'View Results';
+  } else {
+    nextSpan.textContent = 'Next Question';
+  }
+
+  if (feedbackCard) {
+    feedbackCard.style.display = 'block';
+    feedbackCard.classList.remove('hidden');
+    renderMath(feedbackCard);
+    feedbackCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // Disable hints
+  document.getElementById('btn-show-hint').disabled = true;
 }
 
 // Reveal Hint Box
@@ -1576,15 +1930,22 @@ function selectOption(optionIndex) {
   const explanationBody = document.getElementById('explanation-body');
   const nextBtn = document.getElementById('btn-next-question');
 
+  const correctOption = question.options.find(opt => opt.isCorrect);
+
   if (isCorrect) {
     feedbackBadge.textContent = "Correct";
     feedbackBadge.className = "feedback-badge correct";
+    explanationBody.innerHTML = `<p>${chosenOption.explanation}</p>`;
   } else {
     feedbackBadge.textContent = "Incorrect";
     feedbackBadge.className = "feedback-badge incorrect";
+    explanationBody.innerHTML = `
+      <p><strong>Your Answer:</strong> ${chosenOption.explanation}</p>
+      <p style="margin-top: 0.75rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+        <strong>Correct Answer:</strong> ${correctOption.explanation}
+      </p>
+    `;
   }
-
-  explanationBody.textContent = chosenOption.explanation;
 
   const nextSpan = nextBtn.querySelector('span');
   if (currentQuestionIndex === quizQuestions.length - 1) {
@@ -1593,12 +1954,23 @@ function selectOption(optionIndex) {
     nextSpan.textContent = "Next Question";
   }
 
-  feedbackCard.style.display = 'block';
+  if (feedbackCard) {
+    feedbackCard.style.display = 'block';
+    feedbackCard.classList.remove('hidden');
+    renderMath(feedbackCard);
+  }
+  const explanationBox = document.getElementById('explanation-box');
+  if (explanationBox) {
+    explanationBox.style.display = 'block';
+    explanationBox.classList.remove('hidden');
+    renderMath(explanationBox);
+  }
 
-  renderMath(feedbackCard);
-
-  // Scroll feedback card into view
-  feedbackCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  // Scroll the visible feedback/explanation card into view
+  const visibleCard = (feedbackCard && feedbackCard.style.display !== 'none') ? feedbackCard : explanationBox;
+  if (visibleCard) {
+    visibleCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
 }
 
 // Load next question or trigger quiz finish
