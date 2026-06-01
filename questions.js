@@ -8,10 +8,10 @@ const questionsDatabase = [
     interactionType: "matching-list",
     matchItems: [
       { smiles: "NCC(=O)O", correctAnswer: "Glycine" },
-      { smiles: "N[C@@H](C)C(=O)O", correctAnswer: "Alanine" },
-      { smiles: "N[C@@H](CC(C)C)C(=O)O", correctAnswer: "Valine" },
-      { smiles: "N[C@@H](CO)C(=O)O", correctAnswer: "Serine" },
-      { smiles: "N[C@@H](Cc1ccccc1)C(=O)O", correctAnswer: "Phenylalanine" }
+      { smiles: "C[C@@H](C(=O)O)N", correctAnswer: "Alanine" },
+      { smiles: "CC(C)[C@@H](C(=O)O)N", correctAnswer: "Valine" },
+      { smiles: "OC[C@@H](C(=O)O)N", correctAnswer: "Serine" },
+      { smiles: "c1ccc(cc1)C[C@@H](C(=O)O)N", correctAnswer: "Phenylalanine" }
     ],
     matchOptions: ["Glycine", "Alanine", "Valine", "Serine", "Phenylalanine"],
     tags: ["Amino Acids", "Matching"],
@@ -87,6 +87,88 @@ const questionsDatabase = [
     textbookUrl: "#",
     options: [
       { text: "All matched correctly", isCorrect: true, explanation: "In the α-anomer, the OH on C1 points downward (same side as the ring oxygen's reference plane). In the β-anomer, the C1 OH points upward. Both share the same D-glucose configuration at C2-C5." }
+    ]
+  },
+  {
+    id: 5,
+    examType: "ACS",
+    topic: "Multistep Synthesis",
+    questionText: "Complete the following multistep synthesis by selecting the missing reagents.",
+    interactionType: "roadmap",
+    steps: [
+      { type: "molecule", isBlank: false, smiles: "CC(=O)C" },
+      { type: "arrow", isBlank: true, options: ["NaBH4, MeOH", "LiAlH4, ether", "CH3MgBr, ether; then H3O+", "CrO3, H2SO4"], correctAnswer: "NaBH4, MeOH" },
+      { type: "molecule", isBlank: false, smiles: "CC(O)C" },
+      { type: "arrow", isBlank: true, options: ["PBr3", "SOCl2, pyridine", "HCl", "TsCl, pyridine"], correctAnswer: "PBr3" },
+      { type: "molecule", isBlank: false, smiles: "CC(Br)C" }
+    ],
+    tags: ["Synthesis", "Reagents"],
+    hint: "Think about how to reduce a ketone to an alcohol, and then how to convert an alcohol to an alkyl bromide.",
+    textbookRef: "OpenStax Section 17.4",
+    textbookUrl: "#",
+    options: [
+      { text: "Correct synthesis", isCorrect: true, explanation: "Acetone is reduced to 2-propanol using NaBH4. The secondary alcohol is then converted to 2-bromopropane using PBr3." }
+    ]
+  },
+  {
+    id: 6,
+    examType: "OpenStax",
+    chapter: "Ch 10: Alkyl Halides",
+    questionText: "Order the mechanistic steps of the following SN1 reaction.",
+    interactionType: "sequence",
+    sequenceItems: [
+      { smiles: "CC(C)(C)Br" },
+      { smiles: "C[C+](C)C" },
+      { smiles: "CC(C)(C)O" }
+    ],
+    correctSequence: ["A", "B", "C"],
+    tags: ["Mechanism", "SN1"],
+    hint: "Reactant -> Carbocation Intermediate -> Product",
+    textbookRef: "OpenStax Section 10.3",
+    textbookUrl: "#",
+    options: [
+      { text: "Correct mechanism", isCorrect: true, explanation: "The leaving group (Br) leaves to form a tertiary carbocation. Then water attacks the carbocation to form the alcohol product." }
+    ]
+  },
+  {
+    id: 7,
+    examType: "ACS",
+    topic: "Stereochemistry",
+    questionText: "Determine the R/S configuration for each stereocenter in (2R, 3S)-2-bromo-3-chlorobutane.",
+    interactionType: "labeling",
+    media: { type: "smiles", smiles: "C[C@@H](Cl)[C@H](Br)C" },
+    labels: [
+      { text: "C2 Configuration", correctAnswer: "R" },
+      { text: "C3 Configuration", correctAnswer: "S" }
+    ],
+    labelOptions: ["R", "S", "None"],
+    tags: ["Stereocenters", "R/S"],
+    hint: "Assign priorities using Cahn-Ingold-Prelog rules. Br > Cl > C > H.",
+    textbookRef: "OpenStax Section 5.3",
+    textbookUrl: "#",
+    options: [
+      { text: "Correct configurations", isCorrect: true, explanation: "At C2, Br is priority 1, C3 is priority 2, methyl is priority 3. Hydrogen is in the back. 1->2->3 is clockwise, so R. At C3, Cl is priority 1, C2 is priority 2, methyl is priority 3. Hydrogen is in the back. 1->2->3 is counterclockwise, so S." }
+    ]
+  },
+  {
+    id: 8,
+    examType: "OpenStax",
+    chapter: "Ch 11: Elimination",
+    questionText: "Which of the following are requirements or characteristics of an E2 elimination mechanism? (Select all that apply)",
+    interactionType: "sata",
+    sataOptions: [
+      { text: "Requires a strong base", isCorrect: true },
+      { text: "Proceeds via a carbocation intermediate", isCorrect: false },
+      { text: "Requires an anti-periplanar transition state", isCorrect: true },
+      { text: "Rate depends only on the substrate", isCorrect: false },
+      { text: "Reaction rate follows second-order kinetics", isCorrect: true }
+    ],
+    tags: ["Elimination", "E2"],
+    hint: "E2 is a concerted bimolecular elimination.",
+    textbookRef: "OpenStax Section 11.2",
+    textbookUrl: "#",
+    options: [
+      { text: "Correct choices", isCorrect: true, explanation: "E2 is bimolecular (depends on substrate and base), requires a strong base to pull off the proton concurrently with leaving group departure, and geometrically requires an anti-periplanar arrangement to form the pi bond." }
     ]
   }
 ];

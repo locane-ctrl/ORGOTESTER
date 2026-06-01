@@ -17,15 +17,17 @@ let timerInterval = null;
 let hintsEnabled = true;
 let hintRevealedForCurrentQuestion = false;
 
-// SmilesDrawer Instance & Configuration options updated to prevent bulky labels
+// SmilesDrawer Instance & Configuration options updated for bold ChemDraw-like styling
 const options = {
   width: 600,
   height: 400,
-  bondThickness: 1.5, // Sleek, thin bonds
-  bondLength: 30, // Stretch bonds to prevent atom crowding
-  bondSpacing: 4.0, // Closer double bonds
-  fontSizeLarge: 14, // Milder atom label size
-  fontSizeSmall: 10, // Proportional subscripts
+  bondThickness: 2.6, // Bold, ChemDraw-like bonds (2.6px)
+  bondLength: 36, // Longer bonds to prevent atom crowding and narrow the stereochemical wedges
+  bondSpacing: 6.0, // Clearly spaced double bonds
+  fontSizeLarge: 16, // Bold, highly legible atom labels
+  fontSizeSmall: 11, // Proportional subscripts
+  padding: 10, // Maximize molecule rendering footprint
+  overlapResolutionIterations: 4, // Resolve atom/bond overlaps more aggressively
   atomVisualization: 'default',
   theme: 'dark',
   themes: {
@@ -92,12 +94,7 @@ function renderDynamicScheme(schemeData, container, hideProducts = false) {
       const localDrawer = new SmilesDrawer.SvgDrawer({
         ...options,
         width: 200,
-        height: 150,
-        fontSizeLarge: 7,
-        fontSizeSmall: 5,
-        bondLength: 15,
-        bondThickness: 1.2,
-        bondSpacing: 2.2
+        height: 150
       });
 
       SmilesDrawer.parse(smiles, (tree) => {
@@ -176,12 +173,7 @@ function renderDynamicScheme(schemeData, container, hideProducts = false) {
         const localDrawer = new SmilesDrawer.SvgDrawer({
           ...options,
           width: 200,
-          height: 150,
-          fontSizeLarge: 7,
-          fontSizeSmall: 5,
-          bondLength: 15,
-          bondThickness: 1.2,
-          bondSpacing: 2.2
+          height: 150
         });
 
         SmilesDrawer.parse(prod, (tree) => {
@@ -609,12 +601,7 @@ function renderMedia(media, container, isReview = false) {
       const nodeDrawer = new SmilesDrawer.SvgDrawer({
         ...options,
         width: 150,
-        height: 110,
-        fontSizeLarge: 8,
-        fontSizeSmall: 6,
-        bondLength: 14,
-        bondThickness: 1.2,
-        bondSpacing: 2.0
+        height: 110
       });
 
       SmilesDrawer.parse(node.smiles, (tree) => {
@@ -1205,6 +1192,61 @@ function startPracticeTest() {
   // Shuffle questions
   filtered = shuffleArray(filtered);
 
+  // Shuffle multiple choice options and interactive question elements
+  filtered.forEach(q => {
+    if (!q.interactionType && q.options) {
+      q.options = shuffleArray(q.options);
+    } else if (q.interactionType === 'matching-list') {
+      if (q.matchOptions) q.matchOptions = shuffleArray(q.matchOptions);
+      if (q.matchItems) q.matchItems = shuffleArray(q.matchItems);
+    } else if (q.interactionType === 'matching-grid') {
+      if (q.gridOptions) q.gridOptions = shuffleArray(q.gridOptions);
+      if (q.gridItems) q.gridItems = shuffleArray(q.gridItems);
+    } else if (q.interactionType === 'ranking' && q.rankItems && q.correctRanking) {
+      const originalLabels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+      let itemsWithOrigLabel = q.rankItems.map((item, i) => ({
+        item: item,
+        origLabel: originalLabels[i]
+      }));
+      
+      itemsWithOrigLabel = shuffleArray(itemsWithOrigLabel);
+      
+      const newCorrectRanking = q.correctRanking.map(origLabel => {
+        const newIndex = itemsWithOrigLabel.findIndex(wrapper => wrapper.origLabel === origLabel);
+        return originalLabels[newIndex];
+      });
+      
+      q.rankItems = itemsWithOrigLabel.map(wrapper => wrapper.item);
+      q.correctRanking = newCorrectRanking;
+    } else if (q.interactionType === 'sequence' && q.sequenceItems && q.correctSequence) {
+      const originalLabels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+      let itemsWithOrigLabel = q.sequenceItems.map((item, i) => ({
+        item: item,
+        origLabel: originalLabels[i]
+      }));
+      
+      itemsWithOrigLabel = shuffleArray(itemsWithOrigLabel);
+      
+      const newCorrectSequence = q.correctSequence.map(origLabel => {
+        const newIndex = itemsWithOrigLabel.findIndex(wrapper => wrapper.origLabel === origLabel);
+        return originalLabels[newIndex];
+      });
+      
+      q.sequenceItems = itemsWithOrigLabel.map(wrapper => wrapper.item);
+      q.correctSequence = newCorrectSequence;
+    } else if (q.interactionType === 'labeling' && q.labels) {
+      q.labels = shuffleArray(q.labels);
+    } else if (q.interactionType === 'sata' && q.sataOptions) {
+      q.sataOptions = shuffleArray(q.sataOptions);
+    } else if (q.interactionType === 'roadmap' && q.steps) {
+      q.steps.forEach(step => {
+        if (step.isBlank && step.options) {
+          step.options = shuffleArray(step.options);
+        }
+      });
+    }
+  });
+
   // Determine question count limits
   const numQuestionsVal = document.getElementById('num-questions').value;
   if (numQuestionsVal !== 'all') {
@@ -1467,7 +1509,7 @@ function loadQuestion(index) {
 // ============================================================
 // INTERACTIVE QUESTION RENDERER
 // ============================================================
-function renderInteractiveQuestion(question, container) {
+function renderInteractiveQuestion(question, container, isReview = false, userSelections = null) {
   container.style.display = 'block';
 
   // Helper to draw a SMILES structure into an SVG element
@@ -1482,9 +1524,7 @@ function renderInteractiveQuestion(question, container) {
     parentEl.appendChild(svg);
     const localDrawer = new SmilesDrawer.SvgDrawer({
       ...options,
-      width: w, height: h,
-      fontSizeLarge: 7, fontSizeSmall: 5,
-      bondLength: 15, bondThickness: 1.2, bondSpacing: 2.2
+      width: w, height: h
     });
     SmilesDrawer.parse(smiles, (tree) => {
       localDrawer.draw(tree, uid, 'dark');
@@ -1492,22 +1532,41 @@ function renderInteractiveQuestion(question, container) {
   };
 
   // Helper to create a styled select dropdown
-  const createSelect = (optionsList, id) => {
+  const createSelect = (optionsList, id, correctVal = null) => {
     const sel = document.createElement('select');
     sel.className = 'interactive-select';
     sel.id = id;
-    const defaultOpt = document.createElement('option');
-    defaultOpt.value = '';
-    defaultOpt.textContent = '— Select —';
-    defaultOpt.disabled = true;
-    defaultOpt.selected = true;
-    sel.appendChild(defaultOpt);
-    optionsList.forEach(opt => {
+    if (isReview && correctVal) {
+      sel.disabled = true;
+      sel.classList.add('correct');
       const o = document.createElement('option');
-      o.value = opt;
-      o.textContent = opt;
+      o.value = correctVal;
+      o.textContent = correctVal;
+      o.selected = true;
       sel.appendChild(o);
-    });
+      // Fully populate other options for visual accuracy/inspection
+      optionsList.forEach(opt => {
+        if (opt !== correctVal) {
+          const oOpt = document.createElement('option');
+          oOpt.value = opt;
+          oOpt.textContent = opt;
+          sel.appendChild(oOpt);
+        }
+      });
+    } else {
+      const defaultOpt = document.createElement('option');
+      defaultOpt.value = '';
+      defaultOpt.textContent = '— Select —';
+      defaultOpt.disabled = true;
+      defaultOpt.selected = true;
+      sel.appendChild(defaultOpt);
+      optionsList.forEach(opt => {
+        const o = document.createElement('option');
+        o.value = opt;
+        o.textContent = opt;
+        sel.appendChild(o);
+      });
+    }
     return sel;
   };
 
@@ -1531,12 +1590,27 @@ function renderInteractiveQuestion(question, container) {
 
       const selectWrapper = document.createElement('div');
       selectWrapper.className = 'item-select-wrapper';
-      // Only include the correct answers as options (no extra distractors shown)
-      const sel = createSelect(question.matchOptions.filter(opt =>
+      const filteredOptions = question.matchOptions.filter(opt =>
         question.matchItems.some(mi => mi.correctAnswer === opt)
-      ), `match-sel-${idx}`);
+      );
+      const sel = createSelect(filteredOptions, isReview ? `review-match-sel-${idx}` : `match-sel-${idx}`, item.correctAnswer);
       sel.dataset.correctAnswer = item.correctAnswer;
       selectWrapper.appendChild(sel);
+
+      if (isReview && userSelections && userSelections[idx] !== item.correctAnswer) {
+        selectWrapper.style.flexDirection = 'column';
+        selectWrapper.style.alignItems = 'flex-end';
+        selectWrapper.style.gap = '4px';
+
+        const wrongLabel = document.createElement('div');
+        wrongLabel.style.color = 'var(--accent-red)';
+        wrongLabel.style.fontSize = '0.8rem';
+        wrongLabel.style.fontWeight = '600';
+        const chosenText = userSelections[idx] || 'none';
+        wrongLabel.innerHTML = `Your answer: <span style="text-decoration: line-through;">${chosenText}</span>`;
+        selectWrapper.appendChild(wrongLabel);
+      }
+
       row.appendChild(selectWrapper);
 
       listContainer.appendChild(row);
@@ -1552,12 +1626,14 @@ function renderInteractiveQuestion(question, container) {
       });
     }, 0);
 
-    const submitBtn = document.createElement('button');
-    submitBtn.type = 'button';
-    submitBtn.className = 'btn-submit-interactive';
-    submitBtn.textContent = 'Submit Answer';
-    submitBtn.onclick = () => submitInteractiveAnswer(question);
-    container.appendChild(submitBtn);
+    if (!isReview) {
+      const submitBtn = document.createElement('button');
+      submitBtn.type = 'button';
+      submitBtn.className = 'btn-submit-interactive';
+      submitBtn.textContent = 'Submit Answer';
+      submitBtn.onclick = () => submitInteractiveAnswer(question);
+      container.appendChild(submitBtn);
+    }
   }
 
   // ---- MATCHING GRID ----
@@ -1577,21 +1653,34 @@ function renderInteractiveQuestion(question, container) {
       renderMedia(item.media, structDiv, true);
       cell.appendChild(structDiv);
 
-      const sel = createSelect(question.gridOptions, `grid-sel-${idx}`);
+      const sel = createSelect(question.gridOptions, isReview ? `review-grid-sel-${idx}` : `grid-sel-${idx}`, item.correctAnswer);
       sel.dataset.correctAnswer = item.correctAnswer;
       cell.appendChild(sel);
+
+      if (isReview && userSelections && userSelections[idx] !== item.correctAnswer) {
+        const wrongLabel = document.createElement('div');
+        wrongLabel.style.color = 'var(--accent-red)';
+        wrongLabel.style.fontSize = '0.8rem';
+        wrongLabel.style.fontWeight = '600';
+        wrongLabel.style.marginTop = '4px';
+        const chosenText = userSelections[idx] || 'none';
+        wrongLabel.innerHTML = `Your answer: <span style="text-decoration: line-through;">${chosenText}</span>`;
+        cell.appendChild(wrongLabel);
+      }
 
       gridContainer.appendChild(cell);
     });
 
     container.appendChild(gridContainer);
 
-    const submitBtn = document.createElement('button');
-    submitBtn.type = 'button';
-    submitBtn.className = 'btn-submit-interactive';
-    submitBtn.textContent = 'Submit Answer';
-    submitBtn.onclick = () => submitInteractiveAnswer(question);
-    container.appendChild(submitBtn);
+    if (!isReview) {
+      const submitBtn = document.createElement('button');
+      submitBtn.type = 'button';
+      submitBtn.className = 'btn-submit-interactive';
+      submitBtn.textContent = 'Submit Answer';
+      submitBtn.onclick = () => submitInteractiveAnswer(question);
+      container.appendChild(submitBtn);
+    }
   }
 
     // ---- RANKING ----
@@ -1643,9 +1732,33 @@ function renderInteractiveQuestion(question, container) {
     ddRow.className = 'ranking-dropdowns-row';
 
     for (let i = 0; i < question.correctRanking.length; i++) {
-      const sel = createSelect(labels, `rank-sel-${i}`);
+      const sel = createSelect(labels, isReview ? `review-rank-sel-${i}` : `rank-sel-${i}`, question.correctRanking[i]);
       sel.dataset.correctAnswer = question.correctRanking[i];
-      ddRow.appendChild(sel);
+
+      if (isReview) {
+        const selectContainer = document.createElement('div');
+        selectContainer.style.display = 'flex';
+        selectContainer.style.flexDirection = 'column';
+        selectContainer.style.alignItems = 'center';
+        selectContainer.style.gap = '4px';
+        selectContainer.appendChild(sel);
+
+        const wrongLabel = document.createElement('div');
+        wrongLabel.style.fontSize = '0.8rem';
+        wrongLabel.style.fontWeight = '600';
+        if (userSelections && userSelections[i] !== question.correctRanking[i]) {
+          wrongLabel.style.color = 'var(--accent-red)';
+          const chosenText = userSelections[i] || 'none';
+          wrongLabel.innerHTML = `Chose: ${chosenText}`;
+        } else {
+          wrongLabel.style.visibility = 'hidden';
+          wrongLabel.textContent = 'Chose: A';
+        }
+        selectContainer.appendChild(wrongLabel);
+        ddRow.appendChild(selectContainer);
+      } else {
+        ddRow.appendChild(sel);
+      }
 
       if (i < question.correctRanking.length - 1) {
         const sep = document.createElement('span');
@@ -1665,12 +1778,283 @@ function renderInteractiveQuestion(question, container) {
       });
     }, 0);
 
-    const submitBtn = document.createElement('button');
-    submitBtn.type = 'button';
-    submitBtn.className = 'btn-submit-interactive';
-    submitBtn.textContent = 'Submit Answer';
-    submitBtn.onclick = () => submitInteractiveAnswer(question);
-    container.appendChild(submitBtn);
+    if (!isReview) {
+      const submitBtn = document.createElement('button');
+      submitBtn.type = 'button';
+      submitBtn.className = 'btn-submit-interactive';
+      submitBtn.textContent = 'Submit Answer';
+      submitBtn.onclick = () => submitInteractiveAnswer(question);
+      container.appendChild(submitBtn);
+    }
+  }
+
+  // ---- ROADMAP ----
+  else if (question.interactionType === 'roadmap') {
+    const roadmapContainer = document.createElement('div');
+    roadmapContainer.className = 'roadmap-container';
+
+    question.steps.forEach((step, idx) => {
+      if (step.type === 'molecule') {
+        const stepDiv = document.createElement('div');
+        stepDiv.className = 'roadmap-step';
+        
+        const structDiv = document.createElement('div');
+        structDiv.className = 'molecule-structure';
+        
+        if (!step.isBlank) {
+          setTimeout(() => drawSmiles(step.smiles, structDiv, 110, 80), 0);
+        }
+        
+        stepDiv.appendChild(structDiv);
+        roadmapContainer.appendChild(stepDiv);
+      } else if (step.type === 'arrow') {
+        const arrowContainer = document.createElement('div');
+        arrowContainer.className = 'roadmap-arrow-container';
+        
+        if (step.isBlank) {
+          // Dropdown for the reaction step reagents
+          const sel = createSelect(step.options, isReview ? `review-roadmap-sel-${idx}` : `roadmap-sel-${idx}`, step.correctAnswer);
+          sel.dataset.correctAnswer = step.correctAnswer;
+          arrowContainer.appendChild(sel);
+          
+          // Render a beautiful horizontal reaction arrow below the dropdown
+          const arrowWrapper = document.createElement('div');
+          arrowWrapper.className = 'arrow-wrapper';
+          arrowWrapper.style.width = '100px';
+          arrowWrapper.style.marginTop = '8px';
+          arrowWrapper.style.marginBottom = '8px';
+          arrowContainer.appendChild(arrowWrapper);
+          
+          if (isReview && userSelections && userSelections[idx] !== step.correctAnswer) {
+            const wrongLabel = document.createElement('div');
+            wrongLabel.style.color = 'var(--accent-red)';
+            wrongLabel.style.fontSize = '0.8rem';
+            wrongLabel.style.fontWeight = '600';
+            const chosenText = userSelections[idx] || 'none';
+            wrongLabel.innerHTML = `Chose: <span style="text-decoration: line-through;">${chosenText}</span>`;
+            arrowContainer.appendChild(wrongLabel);
+          }
+        } else {
+          // Non-blank step. Render reaction text/reagents above a beautiful horizontal arrow
+          const reagentText = document.createElement('div');
+          reagentText.style.fontSize = '0.85rem';
+          reagentText.style.color = 'var(--text-primary)';
+          reagentText.textContent = step.text || "";
+          arrowContainer.appendChild(reagentText);
+
+          const arrowWrapper = document.createElement('div');
+          arrowWrapper.className = 'arrow-wrapper';
+          arrowWrapper.style.width = '100px';
+          arrowWrapper.style.marginTop = '8px';
+          arrowWrapper.style.marginBottom = '8px';
+          arrowContainer.appendChild(arrowWrapper);
+        }
+        
+        roadmapContainer.appendChild(arrowContainer);
+      }
+    });
+
+    container.appendChild(roadmapContainer);
+
+    if (!isReview) {
+      const submitBtn = document.createElement('button');
+      submitBtn.type = 'button';
+      submitBtn.className = 'btn-submit-interactive';
+      submitBtn.textContent = 'Submit Answer';
+      submitBtn.onclick = () => submitInteractiveAnswer(question);
+      container.appendChild(submitBtn);
+    }
+  }
+
+  // ---- SEQUENCE ----
+  else if (question.interactionType === 'sequence') {
+    const seqContainer = document.createElement('div');
+    seqContainer.className = 'sequence-container';
+
+    const gridDiv = document.createElement('div');
+    gridDiv.className = 'sequence-grid';
+    
+    const labels = ['A', 'B', 'C', 'D', 'E', 'F'];
+    
+    question.sequenceItems.forEach((item, idx) => {
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'sequence-item';
+      
+      const structDiv = document.createElement('div');
+      structDiv.className = 'molecule-structure';
+      setTimeout(() => drawSmiles(item.smiles, structDiv, 130, 90), 0);
+      itemDiv.appendChild(structDiv);
+      
+      const labelDiv = document.createElement('div');
+      labelDiv.className = 'sequence-label';
+      labelDiv.textContent = item.label || labels[idx];
+      itemDiv.appendChild(labelDiv);
+      
+      gridDiv.appendChild(itemDiv);
+    });
+    seqContainer.appendChild(gridDiv);
+
+    const ddRow = document.createElement('div');
+    ddRow.className = 'sequence-dropdowns';
+    
+    for (let i = 0; i < question.correctSequence.length; i++) {
+      const sel = createSelect(labels.slice(0, question.sequenceItems.length), isReview ? `review-seq-sel-${i}` : `seq-sel-${i}`, question.correctSequence[i]);
+      sel.dataset.correctAnswer = question.correctSequence[i];
+      
+      if (isReview) {
+        const selectContainer = document.createElement('div');
+        selectContainer.style.display = 'flex';
+        selectContainer.style.flexDirection = 'column';
+        selectContainer.style.alignItems = 'center';
+        selectContainer.style.gap = '4px';
+        selectContainer.appendChild(sel);
+
+        if (userSelections && userSelections[i] !== question.correctSequence[i]) {
+          const wrongLabel = document.createElement('div');
+          wrongLabel.style.color = 'var(--accent-red)';
+          wrongLabel.style.fontSize = '0.8rem';
+          wrongLabel.style.fontWeight = '600';
+          wrongLabel.textContent = `Chose: ${userSelections[i] || 'none'}`;
+          selectContainer.appendChild(wrongLabel);
+        }
+        ddRow.appendChild(selectContainer);
+      } else {
+        ddRow.appendChild(sel);
+      }
+
+      if (i < question.correctSequence.length - 1) {
+        const arrow = document.createElement('div');
+        arrow.textContent = '$\\rightarrow$';
+        ddRow.appendChild(arrow);
+      }
+    }
+    seqContainer.appendChild(ddRow);
+    container.appendChild(seqContainer);
+
+    if (!isReview) {
+      const submitBtn = document.createElement('button');
+      submitBtn.type = 'button';
+      submitBtn.className = 'btn-submit-interactive';
+      submitBtn.textContent = 'Submit Answer';
+      submitBtn.onclick = () => submitInteractiveAnswer(question);
+      container.appendChild(submitBtn);
+    }
+  }
+
+  // ---- LABELING ----
+  else if (question.interactionType === 'labeling') {
+    const labContainer = document.createElement('div');
+    labContainer.className = 'labeling-container';
+
+    let hasSmiles = false;
+    let mediaDiv = null;
+    if (question.media) {
+      mediaDiv = document.createElement('div');
+      mediaDiv.className = 'labeling-media';
+      if (question.media.type === 'smiles') {
+        hasSmiles = true;
+      } else {
+        renderMedia(question.media, mediaDiv);
+      }
+      labContainer.appendChild(mediaDiv);
+    }
+
+    const gridDiv = document.createElement('div');
+    gridDiv.className = 'labeling-grid';
+
+    question.labels.forEach((lbl, idx) => {
+      const textDiv = document.createElement('div');
+      textDiv.className = 'labeling-text';
+      textDiv.textContent = lbl.text;
+      gridDiv.appendChild(textDiv);
+
+      const selWrapper = document.createElement('div');
+      selWrapper.className = 'labeling-select-wrapper';
+      const sel = createSelect(question.labelOptions, isReview ? `review-lab-sel-${idx}` : `lab-sel-${idx}`, lbl.correctAnswer);
+      sel.dataset.correctAnswer = lbl.correctAnswer;
+      selWrapper.appendChild(sel);
+      
+      if (isReview && userSelections && userSelections[idx] !== lbl.correctAnswer) {
+        const wrongLabel = document.createElement('div');
+        wrongLabel.style.color = 'var(--accent-red)';
+        wrongLabel.style.fontSize = '0.8rem';
+        wrongLabel.style.fontWeight = '600';
+        wrongLabel.style.marginTop = '4px';
+        wrongLabel.textContent = `Chose: ${userSelections[idx] || 'none'}`;
+        selWrapper.appendChild(wrongLabel);
+      }
+
+      gridDiv.appendChild(selWrapper);
+    });
+
+    labContainer.appendChild(gridDiv);
+    container.appendChild(labContainer);
+
+    if (hasSmiles && mediaDiv) {
+      // Defer drawing SMILES structure until after the parent is inserted in the DOM
+      setTimeout(() => {
+        drawSmiles(question.media.smiles, mediaDiv, 280, 180);
+      }, 0);
+    }
+
+    if (!isReview) {
+      const submitBtn = document.createElement('button');
+      submitBtn.type = 'button';
+      submitBtn.className = 'btn-submit-interactive';
+      submitBtn.textContent = 'Submit Answer';
+      submitBtn.onclick = () => submitInteractiveAnswer(question);
+      container.appendChild(submitBtn);
+    }
+  }
+
+  // ---- SATA ----
+  else if (question.interactionType === 'sata') {
+    const sataContainer = document.createElement('div');
+    sataContainer.className = 'sata-container';
+
+    question.sataOptions.forEach((opt, idx) => {
+      const optDiv = document.createElement('label');
+      optDiv.className = 'sata-option';
+      
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.className = 'interactive-checkbox';
+      cb.value = idx;
+      cb.dataset.isCorrect = opt.isCorrect;
+      
+      if (isReview) {
+        cb.disabled = true;
+        if (userSelections && userSelections.includes(idx.toString())) {
+          cb.checked = true;
+        }
+        
+        if (opt.isCorrect) {
+          if (cb.checked) optDiv.classList.add('correct');
+          else optDiv.classList.add('missed-correct');
+        } else {
+          if (cb.checked) optDiv.classList.add('incorrect');
+        }
+      }
+
+      const txt = document.createElement('span');
+      txt.className = 'sata-label';
+      txt.textContent = opt.text;
+
+      optDiv.appendChild(cb);
+      optDiv.appendChild(txt);
+      sataContainer.appendChild(optDiv);
+    });
+
+    container.appendChild(sataContainer);
+
+    if (!isReview) {
+      const submitBtn = document.createElement('button');
+      submitBtn.type = 'button';
+      submitBtn.className = 'btn-submit-interactive';
+      submitBtn.textContent = 'Submit Answer';
+      submitBtn.onclick = () => submitInteractiveAnswer(question);
+      container.appendChild(submitBtn);
+    }
   }
 
   // Trigger KaTeX on any rendered media
@@ -1682,18 +2066,38 @@ function renderInteractiveQuestion(question, container) {
 // ============================================================
 function submitInteractiveAnswer(question) {
   const allSelects = document.querySelectorAll('.interactive-select');
+  const allCheckboxes = document.querySelectorAll('.interactive-checkbox');
   let allCorrect = true;
+  const selections = [];
 
-  allSelects.forEach(sel => {
-    sel.disabled = true;
-    const correct = sel.dataset.correctAnswer;
-    if (sel.value === correct) {
-      sel.classList.add('correct');
-    } else {
-      sel.classList.add('incorrect');
-      allCorrect = false;
-    }
-  });
+  if (allCheckboxes.length > 0) {
+    allCheckboxes.forEach(cb => {
+      cb.disabled = true;
+      const shouldBeChecked = cb.dataset.isCorrect === 'true';
+      if (cb.checked) {
+        selections.push(cb.value);
+      }
+      if (cb.checked !== shouldBeChecked) {
+        allCorrect = false;
+        if (cb.checked) cb.parentElement.classList.add('incorrect');
+        else cb.parentElement.classList.add('missed-correct');
+      } else if (cb.checked) {
+        cb.parentElement.classList.add('correct');
+      }
+    });
+  } else {
+    allSelects.forEach(sel => {
+      sel.disabled = true;
+      const correct = sel.dataset.correctAnswer;
+      if (sel.value === correct) {
+        sel.classList.add('correct');
+      } else {
+        sel.classList.add('incorrect');
+        allCorrect = false;
+      }
+      selections.push(sel.value);
+    });
+  }
 
   // Disable submit button
   const submitBtn = document.querySelector('.btn-submit-interactive');
@@ -1703,10 +2107,16 @@ function submitInteractiveAnswer(question) {
   userAnswers.push({
     questionId: question.id,
     chosenOptionIndex: allCorrect ? 0 : -1,
-    isCorrect: allCorrect
+    isCorrect: allCorrect,
+    selections: selections
   });
 
   if (allCorrect) score++;
+
+  setTimeout(() => {
+    document.getElementById('btn-next').style.display = 'inline-flex';
+    document.getElementById('btn-next').focus();
+  }, 300);
 
   // Update live score
   document.getElementById('score-display').textContent = `${score}/${quizQuestions.length}`;
@@ -1992,22 +2402,46 @@ function showMistakesReview() {
     const markers = ['A', 'B', 'C', 'D'];
 
     let optionsHtml = '';
-    q.options.forEach((opt, optIdx) => {
-      let pillClass = 'mistake-option-pill';
+    if (!q.interactionType) {
+      q.options.forEach((opt, optIdx) => {
+        let pillClass = 'mistake-option-pill';
 
-      if (optIdx === ans.chosenOptionIndex) {
-        pillClass += ' user-incorrect';
-      } else if (opt.isCorrect) {
-        pillClass += ' correct-choice';
-      }
+        if (optIdx === ans.chosenOptionIndex) {
+          pillClass += ' user-incorrect';
+        } else if (opt.isCorrect) {
+          pillClass += ' correct-choice';
+        }
 
-      optionsHtml += `
-        <div class="${pillClass}">
-          <span class="marker">${markers[optIdx]}</span>
-          <span class="text">${opt.text}</span>
+        optionsHtml += `
+          <div class="${pillClass}">
+            <span class="marker">${markers[optIdx]}</span>
+            <span class="text">${opt.text}</span>
+          </div>
+        `;
+      });
+    }
+
+    let contentHtml = '';
+    if (q.interactionType) {
+      contentHtml = `
+        <div class="mistake-interactive-container" id="mistake-interactive-${q.id}" style="margin-top: 1rem;">
+          <!-- Interactive content rendered dynamically -->
         </div>
       `;
-    });
+    } else {
+      contentHtml = `
+        <div class="mistake-content-split">
+          <div class="structure-card">
+            <div class="structure-label">${getQuestionTypeLabel(q)}</div>
+            <div class="reaction-stage" id="mistake-stage-${q.id}"></div>
+          </div>
+          
+          <div class="mistake-options-list">
+            ${optionsHtml}
+          </div>
+        </div>
+      `;
+    }
 
     card.innerHTML = `
       <div class="mistake-card-header">
@@ -2017,55 +2451,60 @@ function showMistakesReview() {
       
       <h3 class="mistake-question-text">${q.questionText}</h3>
       
-      <div class="mistake-content-split">
-        <div class="structure-card">
-          <div class="structure-label">${getQuestionTypeLabel(q)}</div>
-          <div class="reaction-stage" id="mistake-stage-${q.id}"></div>
-        </div>
-        
-        <div class="mistake-options-list">
-          ${optionsHtml}
-        </div>
-      </div>
+      ${contentHtml}
       
       <div class="mistake-explanation-box">
         <h4>Explanation</h4>
-        <p>${q.options[ans.chosenOptionIndex].explanation}</p>
-        <p style="margin-top: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.5rem;">
-          <strong>Correct Answer explanation:</strong> ${q.options.find(o => o.isCorrect).explanation}
-        </p>
+        ${(!q.interactionType && ans.chosenOptionIndex !== -1) ? `
+          <p><strong>Your Answer:</strong> ${q.options[ans.chosenOptionIndex] ? q.options[ans.chosenOptionIndex].explanation : 'N/A'}</p>
+          <p style="margin-top: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.5rem;">
+            <strong>Correct Answer explanation:</strong> ${q.options.find(o => o.isCorrect).explanation}
+          </p>
+        ` : `
+          <p>${q.interactionType ? 'Some of your selections were wrong. Review the correct associations above.' : 'No answer selected. Review the correct answer below.'}</p>
+          <p style="margin-top: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.5rem;">
+            <strong>Explanation:</strong> ${q.options.find(o => o.isCorrect).explanation}
+          </p>
+        `}
       </div>
     `;
 
     mistakesList.appendChild(card);
   });
 
-  // Render chemistry drawings or dynamic charts/projections for mistakes
+  // Render chemistry drawings, dynamic charts/projections, or interactive templates for mistakes
   wrongAnswers.forEach(ans => {
     const q = quizQuestions.find(quest => quest.id === ans.questionId);
     if (!q) return;
 
-    const stage = document.getElementById(`mistake-stage-${q.id}`);
-    if (!stage) return;
+    if (q.interactionType) {
+      const container = document.getElementById(`mistake-interactive-${q.id}`);
+      if (container) {
+        renderInteractiveQuestion(q, container, true, ans.selections);
+      }
+    } else {
+      const stage = document.getElementById(`mistake-stage-${q.id}`);
+      if (!stage) return;
 
-    if (q.media) {
-      renderMedia(q.media, stage, true);
-    } else if (q.scheme) {
-      renderDynamicScheme(q.scheme, stage);
-    } else if (q.questionSmiles && smilesDrawer) {
-      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      svg.setAttribute('class', 'smiles-render');
-      svg.setAttribute('id', `mistake-svg-${q.id}`);
-      svg.setAttribute('viewBox', '0 0 250 250');
-      svg.style.width = '100%';
-      svg.style.height = '100%';
-      stage.appendChild(svg);
+      if (q.media) {
+        renderMedia(q.media, stage, true);
+      } else if (q.scheme) {
+        renderDynamicScheme(q.scheme, stage);
+      } else if (q.questionSmiles && smilesDrawer) {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', 'smiles-render');
+        svg.setAttribute('id', `mistake-svg-${q.id}`);
+        svg.setAttribute('viewBox', '0 0 250 250');
+        svg.style.width = '100%';
+        svg.style.height = '100%';
+        stage.appendChild(svg);
 
-      SmilesDrawer.parse(q.questionSmiles, (tree) => {
-        smilesDrawer.draw(tree, `mistake-svg-${q.id}`, 'dark');
-      }, (err) => {
-        console.error("Structure parsing error in review: ", err);
-      });
+        SmilesDrawer.parse(q.questionSmiles, (tree) => {
+          smilesDrawer.draw(tree, `mistake-svg-${q.id}`, 'dark');
+        }, (err) => {
+          console.error("Structure parsing error in review: ", err);
+        });
+      }
     }
   });
 

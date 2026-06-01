@@ -206,6 +206,12 @@ body {
   text-decoration: none;
 }
 
+.btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
 .btn-primary {
   background-color: var(--accent-blue);
   color: #000000;
@@ -789,11 +795,14 @@ svg.smiles-render {
   display: block;
 }
 
-/* Ensure SmilesDrawer text maintains proper font metrics for alignment */
+/* Ensure SmilesDrawer text maintains proper font metrics for alignment and outline */
 svg.smiles-render text,
 svg.smiles-render tspan {
   font-family: Arial, Helvetica, sans-serif !important;
   font-weight: 600 !important;
+  stroke: #000000 !important;
+  stroke-width: 1.8px !important;
+  paint-order: stroke fill !important;
 }
 
 /* Force all bond lines and stereochemical wedges to be solid white, overriding gradients */
@@ -1598,6 +1607,91 @@ svg.smiles-render polygon {
   }
 }
 
+/* Mistake Review Styles */
+.mistake-option-pill {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  gap: 0.75rem;
+}
+
+.mistake-option-pill .marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: var(--bg-surface-light);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.mistake-option-pill.correct-choice {
+  background-color: var(--accent-green-dim);
+  border-color: var(--accent-green);
+  color: var(--text-primary);
+}
+
+.mistake-option-pill.correct-choice .marker {
+  background-color: var(--accent-green);
+  color: #000;
+}
+
+.mistake-option-pill.user-incorrect {
+  background-color: var(--accent-red-dim);
+  border-color: var(--accent-red);
+  color: var(--text-primary);
+}
+
+.mistake-option-pill.user-incorrect .marker {
+  background-color: var(--accent-red);
+  color: #fff;
+}
+
+.mistake-explanation-box {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: var(--bg-surface-light);
+  border-left: 4px solid var(--accent-blue);
+  border-radius: var(--radius-sm);
+}
+
+.mistake-explanation-box h4 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: var(--accent-blue);
+}
+
+.mistake-content-split {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.mistake-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.mistake-card-header .badge {
+  background-color: var(--accent-blue-dim);
+  color: var(--accent-blue);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
 /* Dynamic Visual Engine Styles */
 .chart-container {
   position: relative;
@@ -2099,6 +2193,204 @@ svg.smiles-render polygon {
   padding: 2px 5px;
   border-radius: var(--radius-sm);
   white-space: nowrap;
+}
+
+/* ---- Roadmap ---- */
+.roadmap-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.roadmap-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.roadmap-step .molecule-structure {
+  width: 120px;
+  height: 90px;
+  background-color: #1a1a20;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.roadmap-arrow-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 150px;
+}
+
+/* ---- Sequence ---- */
+.sequence-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.sequence-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.sequence-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.75rem;
+}
+
+.sequence-item .molecule-structure {
+  width: 140px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sequence-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--accent-blue);
+  background-color: var(--accent-blue-dim);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+}
+
+.sequence-dropdowns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ---- Labeling ---- */
+.labeling-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.labeling-media {
+  width: 100%;
+  max-width: 300px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1a1a20;
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
+.labeling-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.labeling-row {
+  display: contents;
+}
+
+.labeling-text {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: right;
+  padding-right: 1rem;
+}
+
+.labeling-select-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* ---- SATA ---- */
+.sata-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.sata-option {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--bg-surface);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.sata-option:hover {
+  border-color: var(--accent-blue);
+  background-color: var(--bg-surface-light);
+}
+
+.sata-option.correct {
+  border-color: var(--accent-green) !important;
+  background-color: var(--accent-green-dim);
+}
+
+.sata-option.incorrect {
+  border-color: var(--accent-red) !important;
+  background-color: var(--accent-red-dim);
+}
+
+.sata-option.missed-correct {
+  border-color: var(--accent-blue) !important;
+  background-color: var(--accent-blue-dim);
+  box-shadow: 0 0 8px var(--accent-blue-glow);
+}
+
+.interactive-checkbox {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent-blue);
+  cursor: pointer;
+}
+
+.sata-label {
+  font-weight: 500;
+  color: var(--text-primary);
+  flex: 1;
+  cursor: pointer;
 }
 
 /* Responsive adjustments for interactive formats */
