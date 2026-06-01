@@ -950,25 +950,24 @@ function renderMedia(media, container, isReview = false) {
     svg.style.width = '320px';
     svg.style.height = '250px';
 
-    // Hexagon vertices (pyranose ring perspective)
-    // Back edge is top, front edge is bottom
+    // Standard Haworth pyranose ring vertices
     const verts = [
-      { x: 60, y: 80 },    // 0: top-left (C4)
-      { x: 160, y: 60 },   // 1: top-center (O)
-      { x: 260, y: 80 },   // 2: top-right (C1)
-      { x: 260, y: 160 },  // 3: bottom-right (C2)
-      { x: 160, y: 180 },  // 4: bottom-center (C3)
-      { x: 60, y: 160 }    // 5: bottom-left (C5)
+      { x: 200, y: 70 },   // 0: O (top-right)
+      { x: 250, y: 110 },  // 1: C1 (right)
+      { x: 210, y: 160 },  // 2: C2 (bottom-right)
+      { x: 110, y: 160 },  // 3: C3 (bottom-left)
+      { x: 70, y: 110 },   // 4: C4 (left)
+      { x: 110, y: 70 }    // 5: C5 (top-left)
     ];
 
-    // Draw ring bonds — bottom 3 bonds are thick (front-facing)
+    // Draw ring bonds
     const bonds = [
-      { from: 0, to: 1, thick: false },  // C4-O (back)
-      { from: 1, to: 2, thick: false },  // O-C1 (back)
-      { from: 2, to: 3, thick: true },   // C1-C2 (front right)
-      { from: 3, to: 4, thick: true },   // C2-C3 (front bottom)
-      { from: 4, to: 5, thick: true },   // C3-C5 (front left)
-      { from: 5, to: 0, thick: false }   // C5-C4 (back left)
+      { from: 0, to: 1, thick: false },  // O-C1 (back right)
+      { from: 1, to: 2, thick: true },   // C1-C2 (front right)
+      { from: 2, to: 3, thick: true },   // C2-C3 (front bottom)
+      { from: 3, to: 4, thick: true },   // C3-C4 (front left)
+      { from: 4, to: 5, thick: false },  // C4-C5 (back left)
+      { from: 5, to: 0, thick: false }   // C5-O (back top)
     ];
 
     bonds.forEach(bond => {
@@ -985,25 +984,24 @@ function renderMedia(media, container, isReview = false) {
 
     haworthContainer.appendChild(svg);
 
-    // Label mapping: carbon positions to vertices and substituent offsets
-    // Vertex indices: C1=2, C2=3, C3=4, C4=0, C5=5, O=1
+    // Label mapping: carbon positions to vertices and vertical substituent offsets
     const carbonMap = {
-      c1: { vertex: verts[2], topOffset: { x: 0, y: -30 }, bottomOffset: { x: 0, y: 30 } },
-      c2: { vertex: verts[3], topOffset: { x: 30, y: -20 }, bottomOffset: { x: 30, y: 20 } },
-      c3: { vertex: verts[4], topOffset: { x: 0, y: -30 }, bottomOffset: { x: 0, y: 30 } },
-      c4: { vertex: verts[0], topOffset: { x: 0, y: -30 }, bottomOffset: { x: 0, y: 30 } },
-      c5: { vertex: verts[5], topOffset: { x: -30, y: -20 }, bottomOffset: { x: -30, y: 20 } }
+      c1: { vertex: verts[1], topOffset: { x: 0, y: -35 }, bottomOffset: { x: 0, y: 35 } },
+      c2: { vertex: verts[2], topOffset: { x: 0, y: -35 }, bottomOffset: { x: 0, y: 35 } },
+      c3: { vertex: verts[3], topOffset: { x: 0, y: -35 }, bottomOffset: { x: 0, y: 35 } },
+      c4: { vertex: verts[4], topOffset: { x: 0, y: -35 }, bottomOffset: { x: 0, y: 35 } },
+      c5: { vertex: verts[5], topOffset: { x: 0, y: -35 }, bottomOffset: { x: 0, y: 35 } }
     };
 
-    // Add ring oxygen label
+    // Add ring oxygen label (centered exactly on the vertex to hide corner)
     const oLabel = document.createElement('div');
     oLabel.className = 'haworth-label';
-    oLabel.style.left = `${verts[1].x}px`;
-    oLabel.style.top = `${verts[1].y - 20}px`;
+    oLabel.style.left = `${verts[0].x}px`;
+    oLabel.style.top = `${verts[0].y}px`;
     oLabel.textContent = '$\\text{O}$';
     haworthContainer.appendChild(oLabel);
 
-    // Add substituent labels for each carbon
+    // Add substituent labels and bonds for each carbon
     Object.keys(carbonMap).forEach(key => {
       const carbonData = media[key];
       if (!carbonData) return;
@@ -1016,6 +1014,15 @@ function renderMedia(media, container, isReview = false) {
         topLabel.style.top = `${mapping.vertex.y + mapping.topOffset.y}px`;
         topLabel.textContent = `$${carbonData.top}$`;
         haworthContainer.appendChild(topLabel);
+
+        const bondLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        bondLine.setAttribute('x1', mapping.vertex.x);
+        bondLine.setAttribute('y1', mapping.vertex.y);
+        bondLine.setAttribute('x2', mapping.vertex.x + mapping.topOffset.x);
+        bondLine.setAttribute('y2', mapping.vertex.y + mapping.topOffset.y + 12);
+        bondLine.setAttribute('stroke', '#ffffff');
+        bondLine.setAttribute('stroke-width', '2');
+        svg.appendChild(bondLine);
       }
       if (carbonData.bottom) {
         const bottomLabel = document.createElement('div');
@@ -1024,25 +1031,12 @@ function renderMedia(media, container, isReview = false) {
         bottomLabel.style.top = `${mapping.vertex.y + mapping.bottomOffset.y}px`;
         bottomLabel.textContent = `$${carbonData.bottom}$`;
         haworthContainer.appendChild(bottomLabel);
-      }
 
-      // Draw short vertical bond lines from vertex to label positions
-      if (carbonData.top) {
-        const bondLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        bondLine.setAttribute('x1', mapping.vertex.x);
-        bondLine.setAttribute('y1', mapping.vertex.y);
-        bondLine.setAttribute('x2', mapping.vertex.x + mapping.topOffset.x);
-        bondLine.setAttribute('y2', mapping.vertex.y + mapping.topOffset.y + 8);
-        bondLine.setAttribute('stroke', '#ffffff');
-        bondLine.setAttribute('stroke-width', '2');
-        svg.appendChild(bondLine);
-      }
-      if (carbonData.bottom) {
         const bondLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         bondLine.setAttribute('x1', mapping.vertex.x);
         bondLine.setAttribute('y1', mapping.vertex.y);
         bondLine.setAttribute('x2', mapping.vertex.x + mapping.bottomOffset.x);
-        bondLine.setAttribute('y2', mapping.vertex.y + mapping.bottomOffset.y - 8);
+        bondLine.setAttribute('y2', mapping.vertex.y + mapping.bottomOffset.y - 12);
         bondLine.setAttribute('stroke', '#ffffff');
         bondLine.setAttribute('stroke-width', '2');
         svg.appendChild(bondLine);
@@ -2472,6 +2466,9 @@ function showMistakesReview() {
     mistakesList.appendChild(card);
   });
 
+  // Switch screen BEFORE rendering charts so they can compute dimensions correctly
+  switchScreen('mistakes-screen');
+
   // Render chemistry drawings, dynamic charts/projections, or interactive templates for mistakes
   wrongAnswers.forEach(ans => {
     const q = quizQuestions.find(quest => quest.id === ans.questionId);
@@ -2509,8 +2506,6 @@ function showMistakesReview() {
   });
 
   renderMath(mistakesList);
-
-  switchScreen('mistakes-screen');
 }
 
 // Navigate back to results screen

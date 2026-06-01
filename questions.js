@@ -30,22 +30,22 @@ const questionsDatabase = [
     interactionType: "matching-grid",
     gridColumns: 4,
     gridItems: [
-      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Glucose" },
-      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Galactose" },
-      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Mannose" },
       { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Allose" },
-      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Altrose" },
-      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{OH}", right: "\\text{H}" }] }, correctAnswer: "D-Gulose" },  
+      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Altrose" },
+      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Glucose" },
+      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Mannose" },
+      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Gulose" },
       { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Idose" },
+      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Galactose" },
       { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Talose" }
     ],
-    gridOptions: ["D-Glucose", "D-Galactose", "D-Mannose", "D-Allose", "D-Altrose", "D-Gulose", "D-Idose", "D-Talose"],
+    gridOptions: ["D-Allose", "D-Altrose", "D-Glucose", "D-Mannose", "D-Gulose", "D-Idose", "D-Galactose", "D-Talose"],
     tags: ["Carbohydrates", "Fischer Projections", "D-Aldohexoses"],
     hint: "Remember the mnemonic: All Altruists Gladly Make Gum In Gallon Tanks. The OH pattern on C2-C5 distinguishes each sugar.",
     textbookRef: "OpenStax Section 25.2",
     textbookUrl: "#",
     options: [
-      { text: "All matched correctly", isCorrect: true, explanation: "The 8 D-aldohexoses differ only in the stereochemistry at C2, C3, C4, and C5. D-Glucose: R-L-R-R. D-Galactose: R-L-L-R. D-Mannose: L-L-R-R. D-Allose: R-R-R-R. D-Altrose: R-R-L-R. D-Gulose: R-L-L-L. D-Idose: L-R-L-R. D-Talose: L-L-L-R." }
+      { text: "All matched correctly", isCorrect: true, explanation: "The 8 D-aldohexoses differ only in the stereochemistry at C2, C3, C4, and C5. D-Allose: R-R-R-R. D-Altrose: L-R-R-R. D-Glucose: R-L-R-R. D-Mannose: L-L-R-R. D-Gulose: R-R-L-R. D-Idose: L-R-L-R. D-Galactose: R-L-L-R. D-Talose: L-L-L-R." }
     ]
   },
   {
@@ -169,6 +169,89 @@ const questionsDatabase = [
     textbookUrl: "#",
     options: [
       { text: "Correct choices", isCorrect: true, explanation: "E2 is bimolecular (depends on substrate and base), requires a strong base to pull off the proton concurrently with leaving group departure, and geometrically requires an anti-periplanar arrangement to form the pi bond." }
+    ]
+  },
+  {
+    id: 9,
+    examType: "OpenStax",
+    chapter: "Ch 12: Spectroscopy",
+    questionText: "Based on the provided Mass Spectrum, which compound corresponds to the molecular ion peak at $m/z = 44$ and a significant base peak at $m/z = 29$?",
+    media: {
+      type: "spectroscopy",
+      specType: "ms",
+      dataPoints: [
+        { x: 15, y: 15, label: "methyl fragment" },
+        { x: 29, y: 100, label: "ethyl/formyl base peak" },
+        { x: 43, y: 8, label: "propyl fragment" },
+        { x: 44, y: 60, label: "molecular ion [M+]" },
+        { x: 45, y: 2, label: "M+1 isotope peak" }
+      ]
+    },
+    tags: ["Spectroscopy", "Mass Spectrometry"],
+    hint: "Recall that $m/z = 44$ corresponds to the molecular weight of propane ($C_3H_8$) or acetaldehyde ($CH_3CHO$). A base peak at $m/z = 29$ represents the loss of a methyl radical ($M - 15$) to form an acylium ion $[H-C\\equiv O]^+$ or an ethyl cation $[CH_3-CH_2]^+$. Check which fits the fragmentation pattern best.",
+    textbookRef: "OpenStax Section 12.1",
+    textbookUrl: "https://openstax.org/books/organic-chemistry/pages/12-1-mass-spectrometry-principles-and-applications",
+    options: [
+      {
+        text: "Propane",
+        isCorrect: true,
+        explanation: "Correct! Propane ($C_3H_8$, MW = 44 g/mol) exhibits a molecular ion peak at $m/z = 44$. Loss of a methyl radical (15 amu) gives the stable ethyl cation ($CH_3CH_2^+$, $m/z = 29$), which forms the base peak."
+      },
+      {
+        text: "Acetaldehyde",
+        isCorrect: false,
+        explanation: "Incorrect. While acetaldehyde ($CH_3CHO$, MW = 44 g/mol) also has a molecular ion at $m/z = 44$, its main fragment would be the acylium ion at $m/z = 29$ ($[CH_3-C\\equiv O]^+$, which would actually appear at $m/z = 43$, not 29, representing $M - 1$ or $[H-C\\equiv O]^+$, but the base peak is overwhelmingly at 43 due to loss of H)."
+      },
+      {
+        text: "Ethanol",
+        isCorrect: false,
+        explanation: "Incorrect. Ethanol has a molecular weight of 46 g/mol, which would show a molecular ion peak at $m/z = 46$, not 44."
+      },
+      {
+        text: "Diethyl ether",
+        isCorrect: false,
+        explanation: "Incorrect. Diethyl ether has a molecular weight of 74 g/mol, which would show a molecular ion peak at $m/z = 74$, not 44."
+      }
+    ]
+  },
+  {
+    id: 10,
+    examType: "ACS",
+    topic: "Mechanisms and Energetics",
+    questionText: "The provided reaction coordinate diagram describes a single-step organic transition. What can be concluded about the thermodynamic and kinetic properties of this reaction?",
+    media: {
+      type: "energyDiagram",
+      points: [
+        { state: "Reactants", energy: 80 },
+        { state: "Transition State (TS)", energy: 150 },
+        { state: "Products", energy: 30 }
+      ]
+    },
+    tags: ["Thermodynamics", "Reaction Coordinates", "Kinetics"],
+    hint: "An exothermic reaction releases energy (Products energy < Reactants energy). The activation energy ($E_a$) is the difference between the Transition State energy and the Reactants energy.",
+    textbookRef: "OpenStax Section 6.8",
+    textbookUrl: "https://openstax.org/books/organic-chemistry/pages/6-8-describing-a-reaction-energy-diagrams-and-transition-states",
+    options: [
+      {
+        text: "It is an exothermic reaction with an activation energy of 70 kJ/mol.",
+        isCorrect: true,
+        explanation: "Correct! The reaction is exothermic (downward overall step, $\\Delta H = 30 - 80 = -50$ kJ/mol). The activation energy is the barrier from reactants to transition state, $E_a = 150 - 80 = 70$ kJ/mol."
+      },
+      {
+        text: "It is an endothermic reaction with an activation energy of 150 kJ/mol.",
+        isCorrect: false,
+        explanation: "Incorrect. The product energy (30 kJ/mol) is lower than the reactant energy (80 kJ/mol), meaning energy is released (exothermic, not endothermic). The activation energy is 70 kJ/mol, not the absolute energy of the transition state."
+      },
+      {
+        text: "It is an exothermic reaction with a reaction enthalpy ($\\Delta H$) of -70 kJ/mol.",
+        isCorrect: false,
+        explanation: "Incorrect. While it is exothermic, the reaction enthalpy is $\\Delta H = E_{\\text{products}} - E_{\\text{reactants}} = 30 - 80 = -50$ kJ/mol, not -70 kJ/mol (which is the negative activation energy)."
+      },
+      {
+        text: "It is a two-step mechanism because there is a transition state peak.",
+        isCorrect: false,
+        explanation: "Incorrect. A reaction energy diagram with a single peak (one transition state) and no intermediates describes a concerted, single-step reaction mechanism."
+      }
     ]
   }
 ];
