@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://unpkg.com/smiles-drawer@1.0.10/dist/smiles-drawer.min.js"></script>
+</head>
+<body>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      SmilesDrawer.parse('O=C1C=CC(=O)O1', function(tree) {
+        console.log(JSON.stringify(tree, null, 2));
+        document.body.innerHTML = '<pre>' + JSON.stringify(tree, null, 2) + '</pre>';
+      });
+    });
+  </script>
+</body>
+</html>

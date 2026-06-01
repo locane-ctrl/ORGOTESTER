@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OrgoTester - Practice Tests</title>
+  <!-- Google Fonts: Outfit for sleek display and Inter for readable body text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- KaTeX CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+
+  <!-- SmilesDrawer CDN -->
+  <script src="https://unpkg.com/smiles-drawer@2/dist/smiles-drawer.min.js"></script>
+
+  <!-- KaTeX JS and Extensions (mhchem for chemical equations, auto-render for parsing) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/mhchem.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Header: Visible during active quiz and results screen -->
+    <header class="app-header" id="app-header">
+      <div class="header-logo">
+        <span class="logo-accent">OrgoTester</span> Finals Prep
+      </div>
+      <div class="header-status-group" id="header-status-group" style="display: none;">
+        <div class="status-item timer-box" id="timer-container" style="display: none;">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span id="timer-display">--:--</span>
+        </div>
+        <div class="status-item score-box">
+          Score: <span id="score-display">0/0</span>
+        </div>
+        <button type="button" class="btn btn-outline" id="btn-quit-quiz" onclick="confirmQuitQuiz()" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border-color: var(--border-color); color: var(--text-secondary);">
+          Return to Menu
+        </button>
+      </div>
+    </header>
+
+    <div class="progress-bar-container" id="progress-container" style="display: none;">
+      <div class="progress-bar-fill" id="progress-bar-fill" style="width: 0%;"></div>
+    </div>
+
+    <main class="main-content">
+      <!-- SCREEN 1: Start Screen / Welcome Screen -->
+      <section id="start-screen" class="screen active">
+        <div class="welcome-card">
+          <div class="welcome-badge">EXAM SIMULATOR</div>
+          <h1>CHEM& 263 Exam Simulator</h1>
+          <p class="subtitle">Prepare for final exam with practice questions, dynamic 2D chemical
+            structure visualizations, LaTeX-rendered chemical formulas, and detailed explanations.</p>
+
+          <div class="mode-selection-group">
+            <h3>Choose Practice Mode</h3>
+            <div class="modes-grid">
+              <button type="button" class="mode-card" id="mode-openstax" onclick="selectMode('OpenStax')">
+                <div class="mode-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                  </svg>
+                </div>
+                <div class="mode-details">
+                  <h4>OpenStax Final Prep</h4>
+                  <p>Covers aldehydes, ketones, carboxylic acids, and derivatives.</p>
+                </div>
+              </button>
+
+              <button type="button" class="mode-card" id="mode-acs" onclick="selectMode('ACS')">
+                <div class="mode-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+                    <line x1="12" y1="22" x2="12" y2="15.5"></line>
+                    <line x1="22" y1="8.5" x2="12" y2="15.5"></line>
+                    <line x1="2" y1="8.5" x2="12" y2="15.5"></line>
+                  </svg>
+                </div>
+                <div class="mode-details">
+                  <h4>ACS Final Prep</h4>
+                  <p>Comprehensive standard testing for advanced organic chemistry.</p>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Configuration Panel: Appears below when a mode is selected -->
+          <div class="config-panel" id="config-panel" style="display: none;">
+            <div class="config-grid">
+              <div class="config-item">
+                <label for="num-questions">Number of Questions</label>
+                <div class="select-wrapper">
+                  <select id="num-questions">
+                    <option value="5">5 Questions</option>
+                    <option value="10">10 Questions</option>
+                    <option value="25">25 Questions</option>
+                    <option value="all" selected>All Available</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="config-item checkbox-group-container">
+                <div class="checkbox-wrapper">
+                  <input type="checkbox" id="enable-timer" checked onchange="toggleTimerInput()">
+                  <label for="enable-timer">Enable Countdown Timer</label>
+                </div>
+                <div class="checkbox-wrapper" style="margin-top: 0.75rem;">
+                  <input type="checkbox" id="enable-hints" checked>
+                  <label for="enable-hints">Show Hints during test</label>
+                </div>
+              </div>
+
+              <div class="config-item duration-input-item" id="duration-input-container">
+                <label for="timer-duration">Duration (minutes)</label>
+                <input type="number" id="timer-duration" min="1" max="180" value="60">
+              </div>
+            </div>
+
+            <!-- Granular Topic/Chapter Filtering Section -->
+            <div class="filter-section" id="filter-section" style="display: none;">
+              <div class="filter-header">
+                <label id="filter-section-title">Filter by Chapters</label>
+                <div class="filter-controls">
+                  <button type="button" class="btn-text" onclick="selectAllFilters(true)">Select All</button>
+                  <span class="divider">|</span>
+                  <button type="button" class="btn-text" onclick="selectAllFilters(false)">Clear All</button>
+                </div>
+              </div>
+              <div class="filter-checkboxes-grid" id="filter-checkboxes-grid">
+                <!-- Dynamically populated checklist -->
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-large btn-glow" id="btn-start-test"
+              onclick="startPracticeTest()">
+              Start Practice Test
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: Quiz Screen -->
+      <section id="quiz-screen" class="screen">
+        <div class="quiz-layout">
+          <div class="quiz-main-card">
+            <div class="quiz-info-header">
+              <span class="badge" id="quiz-mode-badge">Mode</span>
+              <span class="question-tracker" id="question-tracker-text">Question X of Y</span>
+            </div>
+
+            <h2 class="question-text" id="question-text">Question text here...</h2>
+
+            <!-- Molecular structure container -->
+            <div class="structure-card" id="structure-card">
+              <div class="structure-label" id="structure-card-label">Reaction Scheme</div>
+              <div id="reaction-stage" class="reaction-stage"></div>
+            </div>
+
+            <!-- Quiz Helper Section (Hints & References) -->
+            <div class="quiz-helper-section" id="quiz-helper-section" style="display: none;">
+              <div class="helper-buttons-row">
+                <button type="button" class="btn btn-hint" id="btn-show-hint" onclick="toggleHint()">
+                  <svg class="hint-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                  <span>Show Hint</span>
+                </button>
+
+                <a class="btn btn-reference" id="btn-textbook-ref" target="_blank" rel="noopener noreferrer">
+                  <svg class="reference-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                  </svg>
+                  <span id="textbook-ref-label">Read textbook</span>
+                </a>
+              </div>
+
+              <div class="hint-box" id="hint-box" style="display: none;">
+                <span class="hint-bulb">💡</span>
+                <div class="hint-content">
+                  <strong>Hint:</strong> <span id="hint-text">Hint text goes here...</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Multiple Choice Grid -->
+            <div class="options-grid" id="options-grid">
+              <!-- Dynamically populated buttons -->
+            </div>
+
+            <!-- Feedback / Explanation Block -->
+            <div class="feedback-card" id="feedback-card" style="display: none;">
+              <div class="feedback-status-header">
+                <div class="feedback-badge" id="feedback-badge">Correct</div>
+              </div>
+              <div class="explanation-body" id="explanation-body">
+                Explanation text here...
+              </div>
+              <button type="button" class="btn btn-secondary btn-next" id="btn-next-question" onclick="nextQuestion()">
+                <span>Next Question</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: Results Screen -->
+      <section id="results-screen" class="screen">
+        <div class="results-card">
+          <div class="results-header">
+            <div class="circular-progress-wrapper">
+              <svg class="circular-progress" viewBox="0 0 120 120">
+                <circle class="bg" cx="60" cy="60" r="54"></circle>
+                <circle class="fg" id="results-percentage-circle" cx="60" cy="60" r="54" stroke-dasharray="339.29"
+                  stroke-dashoffset="339.29"></circle>
+              </svg>
+              <div class="percentage-display" id="results-percentage-text">0%</div>
+            </div>
+            <h2>Quiz Completed!</h2>
+            <p class="subtitle" id="results-summary-text">You got X out of Y questions correct.</p>
+          </div>
+
+          <div class="results-stats-grid">
+            <div class="stat-card">
+              <span class="stat-label">Time Taken</span>
+              <span class="stat-value" id="results-time-taken">--:--</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Mode Played</span>
+              <span class="stat-value" id="results-mode">--</span>
+            </div>
+          </div>
+
+          <!-- Concept Mastery List -->
+          <div class="concept-mastery-section">
+            <h3>Concept Mastery Analysis</h3>
+            <div class="mastery-container" id="mastery-container">
+              <!-- Dynamically populated items -->
+            </div>
+          </div>
+
+          <div class="results-actions">
+            <button type="button" class="btn btn-outline" id="btn-review-mistakes" onclick="showMistakesReview()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              Review Mistakes
+            </button>
+            <button type="button" class="btn btn-primary btn-glow" onclick="resetApp()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+              </svg>
+              Restart Session
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: Mistakes Review Screen -->
+      <section id="mistakes-screen" class="screen">
+        <div class="mistakes-container-card">
+          <div class="mistakes-header">
+            <button class="btn-back" onclick="backToResults()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+              Back to Summary
+            </button>
+            <h2>Mistakes Review</h2>
+            <p class="subtitle">Review the questions you got wrong to understand where your reasoning faltered.</p>
+          </div>
+
+          <div class="mistakes-list" id="mistakes-list">
+            <!-- Dynamically populated mistake cards -->
+          </div>
+
+          <div class="mistakes-footer">
+            <button type="button" class="btn btn-primary btn-glow" onclick="resetApp()">
+              Restart Session
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>&copy; 2026 Organic Chemistry III Practice Suite. Designed for high-performance study.</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

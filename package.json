@@ -1,0 +1,16 @@
+{
+  "name": "orgo3-final-prep",
+  "version": "1.0.0",
+  "description": "Organic Chemistry III Final Exam Prep Practice Suite",
+  "scripts": {
+    "dev": "npx http-server -p 8080"
+  },
+  "keywords": [
+    "organic-chemistry",
+    "education",
+    "practice-test",
+    "smiles-drawer"
+  ],
+  "author": "Antigravity Pair-Programmer",
+  "license": "MIT"
+}
