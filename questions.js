@@ -253,5 +253,145 @@ const questionsDatabase = [
         explanation: "Incorrect. A reaction energy diagram with a single peak (one transition state) and no intermediates describes a concerted, single-step reaction mechanism."
       }
     ]
+  },
+  {
+    id: 11,
+    examType: "ACS",
+    topic: "Spectroscopy",
+    questionText: "Based on the provided Infrared (IR) Spectrum, which compound exhibits a strong, sharp absorption band at $1715\\text{ cm}^{-1}$ and no O-H stretch?",
+    media: {
+      type: "spectroscopy",
+      specType: "ir",
+      dips: [
+        { xc: 2950, w: 40, d: 50 },
+        { xc: 1715, w: 20, d: 85 }
+      ]
+    },
+    tags: ["Spectroscopy", "Infrared Spectroscopy"],
+    hint: "A strong, sharp peak around 1715 cm⁻¹ indicates a carbonyl group (C=O). The lack of a broad band around 3300 cm⁻¹ excludes alcohols.",
+    textbookRef: "OpenStax Section 12.4",
+    textbookUrl: "#",
+    options: [
+      {
+        text: "Acetone",
+        isCorrect: true,
+        explanation: "Correct! Acetone ($CH_3COCH_3$) contains a carbonyl group (sharp peak at 1715 cm⁻¹) and C-H sp3 stretch at 2950 cm⁻¹, but no O-H group."
+      },
+      {
+        text: "Ethanol",
+        isCorrect: false,
+        explanation: "Incorrect. Ethanol contains an O-H group, which would show a very broad, strong absorption band at 3300 cm⁻¹."
+      },
+      {
+        text: "Diethyl ether",
+        isCorrect: false,
+        explanation: "Incorrect. Diethyl ether has no carbonyl group, so it would not exhibit a peak at 1715 cm⁻¹."
+      },
+      {
+        text: "Propene",
+        isCorrect: false,
+        explanation: "Incorrect. Propene has a C=C double bond (around 1650 cm⁻¹) and =C-H stretch (above 3000 cm⁻¹), but no carbonyl stretch at 1715 cm⁻¹."
+      }
+    ]
+  },
+  {
+    id: 12,
+    examType: "ACS",
+    topic: "Aromatics",
+    questionText: "Predict the major organic product of the following electrophilic aromatic substitution reaction.",
+    scheme: {
+      reactants: ["c1ccccc1"],
+      reagents: "HNO3\nH2SO4",
+      conditions: "50 °C",
+      products: ["[N+](=O)([O-])c1ccccc1"]
+    },
+    tags: ["Aromatics", "Nitration", "EAS"],
+    hint: "Mixing concentrated nitric and sulfuric acids generates the nitronium ion ($NO_2^+$), which is a strong electrophile that attacks benzene.",
+    textbookRef: "OpenStax Section 16.2",
+    textbookUrl: "#",
+    options: [
+      {
+        text: "Nitrobenzene",
+        isCorrect: true,
+        explanation: "Correct! Benzene undergoes nitration with HNO3/H2SO4 to yield nitrobenzene via a sigma complex intermediate."
+      },
+      {
+        text: "Aniline",
+        isCorrect: false,
+        explanation: "Incorrect. Aniline (aminobenzene) is formed by the reduction of nitrobenzene, not by direct electrophilic nitration."
+      },
+      {
+        text: "Benzenesulfonic acid",
+        isCorrect: false,
+        explanation: "Incorrect. Sulfonation requires SO3 and H2SO4, which produces benzenesulfonic acid."
+      },
+      {
+        text: "Chlorobenzene",
+        isCorrect: false,
+        explanation: "Incorrect. Chlorination requires Cl2 and a Lewis acid catalyst like FeCl3."
+      }
+    ]
+  },
+  {
+    id: 13,
+    examType: "OpenStax",
+    chapter: "Ch 25: Carbohydrates",
+    questionText: "Identify each aldopentose Fischer projection by selecting its correct name.",
+    interactionType: "matching-grid",
+    gridColumns: 2,
+    gridItems: [
+      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Ribose" },
+      { media: { type: "fischer", top: "\\text{CHO}", bottom: "\\text{CH}_2\\text{OH}", centers: [{ left: "\\text{OH}", right: "\\text{H}" }, { left: "\\text{H}", right: "\\text{OH}" }, { left: "\\text{H}", right: "\\text{OH}" }] }, correctAnswer: "D-Arabinose" }
+    ],
+    gridOptions: ["D-Ribose", "D-Arabinose", "D-Xylose", "D-Lyxose"],
+    tags: ["Carbohydrates", "Fischer Projections", "Aldopentoses"],
+    hint: "D-Ribose has all OH groups on the right side. D-Arabinose has the C2 OH on the left, and C3/C4 on the right.",
+    textbookRef: "OpenStax Section 25.2",
+    textbookUrl: "#",
+    options: [
+      { text: "All matched correctly", isCorrect: true, explanation: "D-Ribose has R-R-R configuration. D-Arabinose has L-R-R configuration." }
+    ]
+  },
+  {
+    id: 14,
+    examType: "OpenStax",
+    chapter: "Ch 17: Alcohols",
+    questionText: "Complete the following multistep retrosynthetic pathway by identifying the missing reagents.",
+    interactionType: "roadmap",
+    steps: [
+      { type: "molecule", isBlank: false, smiles: "CC=C" },
+      { type: "arrow", isBlank: true, options: ["1) BH3, THF; 2) H2O2, NaOH", "H2O, H2SO4", "PCC", "OsO4, H2O2"], correctAnswer: "1) BH3, THF; 2) H2O2, NaOH" },
+      { type: "molecule", isBlank: false, smiles: "CCCO" },
+      { type: "arrow", isBlank: true, options: ["PCC", "Na2Cr2O7, H2SO4", "LiAlH4", "O3, Zn"], correctAnswer: "PCC" },
+      { type: "molecule", isBlank: false, smiles: "CCC=O" }
+    ],
+    tags: ["Synthesis", "Alcohols", "Aldehydes"],
+    hint: "Propene undergoes anti-Markovnikov hydroboration-oxidation to yield 1-propanol. 1-Propanol is oxidized to propanal using the mild oxidant PCC.",
+    textbookRef: "OpenStax Section 17.5",
+    textbookUrl: "#",
+    options: [
+      { text: "Correct synthesis path", isCorrect: true, explanation: "Hydroboration-oxidation gives the primary alcohol 1-propanol, which is selectively oxidized to the aldehyde propanal by PCC." }
+    ]
+  },
+  {
+    id: 15,
+    examType: "ACS",
+    topic: "Amines and Heterocycles",
+    questionText: "Rank the following aromatic and aliphatic amines in order of increasing basicity (weakest base → strongest base).",
+    interactionType: "ranking",
+    rankItems: [
+      { smiles: "Nc1ccc([N+](=O)[O-])cc1", label: "p-Nitroaniline" },
+      { smiles: "Nc1ccccc1", label: "Aniline" },
+      { smiles: "CN", label: "Methylamine" },
+      { smiles: "CNC", label: "Dimethylamine" }
+    ],
+    correctRanking: ["A", "B", "C", "D"],
+    tags: ["Amines", "Basicity", "Ranking"],
+    hint: "Basicity ranking rules: electron-withdrawing aromatics < simple aromatics < primary alkyl < secondary alkyl.",
+    textbookRef: "OpenStax Section 24.3",
+    textbookUrl: "#",
+    options: [
+      { text: "p-Nitroaniline < Aniline < Methylamine < Dimethylamine", isCorrect: true, explanation: "p-Nitroaniline is extremely weak due to the nitro group's strong -R effect. Aniline is aromatic (lone pair delocalized). Methylamine is a simple aliphatic primary amine. Dimethylamine is a secondary aliphatic amine (more electron-donating groups)." }
+    ]
   }
 ];

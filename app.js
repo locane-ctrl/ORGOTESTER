@@ -458,6 +458,82 @@ function renderMedia(media, container, isReview = false) {
       if (!isReview) {
         activeChartInstance = chartInstance;
       }
+    } else if (media.specType === 'ir') {
+      const xMin = 400;
+      const xMax = 4000;
+      const step = 10;
+      const xValues = [];
+      for (let x = xMax; x >= xMin; x -= step) {
+        xValues.push(x);
+      }
+
+      const dips = media.dips || media.dataPoints || [
+        { xc: 3300, w: 180, d: 40 },
+        { xc: 2950, w: 40, d: 50 },
+        { xc: 1715, w: 20, d: 80 },
+        { xc: 1600, w: 30, d: 20 }
+      ];
+
+      const yValues = xValues.map(x => {
+        let val = 98;
+        dips.forEach(d => {
+          val -= d.d * Math.exp(-0.5 * Math.pow((x - d.xc) / d.w, 2));
+        });
+        return Math.max(val, 2);
+      });
+
+      const chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          datasets: [{
+            label: 'IR Spectrum',
+            data: xValues.map((x, i) => ({ x: x, y: yValues[i] })),
+            borderColor: '#00e676',
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0.1,
+            fill: false,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: {
+              type: 'linear',
+              position: 'bottom',
+              reverse: true,
+              title: {
+                display: true,
+                text: 'Wavenumber (cm-1)',
+                color: '#ffffff',
+                font: { family: 'Outfit', weight: 'bold', size: 13 }
+              },
+              ticks: { color: '#a0a0ab' },
+              grid: { color: '#27272a' },
+              min: xMin,
+              max: xMax
+            },
+            y: {
+              min: 0,
+              max: 100,
+              title: {
+                display: true,
+                text: 'Transmittance (%)',
+                color: '#ffffff',
+                font: { family: 'Outfit', weight: 'bold', size: 13 }
+              },
+              ticks: { color: '#a0a0ab' },
+              grid: { color: '#27272a' }
+            }
+          }
+        }
+      });
+
+      if (!isReview) {
+        activeChartInstance = chartInstance;
+      }
     }
   } else if (media.type === 'energyDiagram') {
     const wrapper = document.createElement('div');
@@ -1360,7 +1436,7 @@ function getQuestionTypeLabel(question) {
   if (!question) return 'Chemical Structure';
   if (question.media) {
     if (question.media.type === 'spectroscopy') {
-      return question.media.specType === 'ms' ? 'Mass Spectrum' : 'NMR Spectrum';
+      return question.media.specType === 'ms' ? 'Mass Spectrum' : (question.media.specType === 'ir' ? 'Infrared (IR) Spectrum' : 'NMR Spectrum');
     } else if (question.media.type === 'energyDiagram') {
       return 'Reaction Coordinate';
     } else if (question.media.type === 'fischer') {
@@ -1584,10 +1660,7 @@ function renderInteractiveQuestion(question, container, isReview = false, userSe
 
       const selectWrapper = document.createElement('div');
       selectWrapper.className = 'item-select-wrapper';
-      const filteredOptions = question.matchOptions.filter(opt =>
-        question.matchItems.some(mi => mi.correctAnswer === opt)
-      );
-      const sel = createSelect(filteredOptions, isReview ? `review-match-sel-${idx}` : `match-sel-${idx}`, item.correctAnswer);
+      const sel = createSelect(question.matchOptions, isReview ? `review-match-sel-${idx}` : `match-sel-${idx}`, item.correctAnswer);
       sel.dataset.correctAnswer = item.correctAnswer;
       selectWrapper.appendChild(sel);
 
